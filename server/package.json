@@ -1,0 +1,31 @@
+{
+  "name": "wishlist-backend",
+  "version": "1.0.0",
+  "description": "Node.js-SQL-ORM",
+  "main": "server.js",
+  "scripts": {
+    "start": "node .",
+    "backend": "nodemon server.js",
+    "frontend": "npm run front --prefix client",
+    "test": "jest",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:make": "knex migrate:make",
+    "migrate:rollback": "knex migrate:rollback",
+    "seed:make": "knex seed:make",
+    "seed:run": "knex seed:run"
+  },
+  "author": "Ekaterina GP",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "config": "^3.3.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.1.1",
+    "jest": "26.0.1",
+    "knex": "^0.21.1",
+    "mysql": "^2.18.1",
+    "objection": "^2.1.3"
+  }
+}
