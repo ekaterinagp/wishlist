@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const jwSecret = config.get("jwtSecret");
 const User = require("../../models/User");
+const Comment = require("../../models/Comment");
+const Wish = require("../../models/Wish");
 
 //@route GET all users
 router.get("/users", async (req, res) => {
@@ -13,15 +15,22 @@ router.get("/users", async (req, res) => {
   return res.status(200).send(users);
 });
 
-//@router GET one user by id + lists
+//@route GET one user by id + wishes
 router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
   const user = await User.query().where("id", id).withGraphFetched("wishes");
+
+  return res.status(200).send(user);
+});
+
+//@route GET all comments for one user
+router.get("/wishlist/:id", async (req, res) => {
+  const id = req.params.id;
+  const user = await Comment.query().where("to_user_id", id);
   return res.status(200).send(user);
 });
 
 //@route POST register user
-
 router.post("/register", (req, res) => {
   const { email, password, passwordCheck, firstName, lastName } = req.body;
   console.log(req.body);

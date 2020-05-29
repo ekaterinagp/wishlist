@@ -23,13 +23,18 @@ exports.up = function (knex) {
     })
     .createTable("comments", (table) => {
       table.increments("id");
-      table.integer("to_user_id").notNullable();
       table.string("text").notNullable();
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table.integer("user_id").unsigned().notNullable();
       table
         .foreign("user_id")
         .references("users.id")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
+      table.integer("wish_id").unsigned().notNullable();
+      table
+        .foreign("wish_id")
+        .references("wishes.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
     });

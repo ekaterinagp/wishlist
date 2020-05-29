@@ -6,17 +6,17 @@ class Wish extends Model {
   }
 
   static get relationMappings() {
-    // const Comment = require("./Comment");
+    const Comment = require("./Comment");
     const User = require("./User");
     return {
-      // comments: {
-      //   relation: Model.HasManyRelation,
-      //   modelClass: Comment,
-      //   join: {
-      //     from: "wishes.id",
-      //     to: "comments.items_id",
-      //   },
-      // },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: "wishes.id",
+          to: "comments.wish_id",
+        },
+      },
       users: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,

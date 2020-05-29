@@ -7,6 +7,7 @@ class Comment extends Model {
 
   static get relationMappings() {
     const User = require("./User");
+    const Wish = require("./Wish");
     return {
       users: {
         relation: Model.BelongsToOneRelation,
@@ -14,6 +15,14 @@ class Comment extends Model {
         join: {
           from: "comments.user_id",
           to: "users.id",
+        },
+      },
+      whishes: {
+        relation: Model.HasManyRelation,
+        modelClass: Wish,
+        join: {
+          from: "comments.user_id",
+          to: "wishes.user_id",
         },
       },
     };

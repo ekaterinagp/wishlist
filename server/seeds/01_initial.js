@@ -57,17 +57,17 @@ exports.seed = function (knex) {
         {
           text: "I thought you hate red color",
           user_id: 1,
-          to_user_id: 2,
+          wish_id: 2,
         },
         {
           text: "Like the one in Harry Potter?",
           user_id: 3,
-          to_user_id: 1,
+          wish_id: 1,
         },
         {
           text: "My friend does it! I can make it cheaper!",
           user_id: 2,
-          to_user_id: 3,
+          wish_id: 3,
         },
       ]);
     });
