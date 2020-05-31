@@ -61,14 +61,14 @@ export default function Header() {
         <Nav className="mr-auto" navbar>
           {token ? (
             <>
-              <NavLink
+              {/* <NavLink
                 to="/home"
                 activeClassName="active"
                 tag={RRNavLink}
                 onClick={home}
               >
                 Profile
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 to="/profile"
                 activeClassName="active"

@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import Header from "./Header";
+import "../css/listcontainer.css";
 
-// import Lists from "./Lists";
+import ListContainer from "./ListContainer";
 // import AddList from "./AddList";
 
 export default function Home() {
@@ -14,20 +15,20 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
 
-  const [lists, setWishes] = useState([]);
+  const [wishes1, setWishes] = useState([]);
   // const loading = userData.name == null;
 
   const fetchLists = async (e) => {
     setWishes([]);
 
-    let res = await axios.get("http://localhost:9090/wishes");
+    let res = await axios.get("http://localhost:9090/userswishes");
     console.log(res.data);
-    // setLoading2(false);
-    // if (res.data.response.length) {
-    //   setLists({
-    //     lists: res.data.response.reverse(),
-    //   });
-    // }
+
+    if (res.data.length) {
+      console.log(res.data);
+      setWishes(res.data);
+    }
+    setLoading(false);
   };
 
   const fetchUser = async (e) => {
@@ -35,23 +36,32 @@ export default function Home() {
     if (userId) {
       const res = await axios.get(`http://localhost:9090/user/${userId}`);
 
-      console.log(res.data[0]);
+      console.log(res.data);
 
-      if (res.data[0]) {
+      if (res.data) {
         setUserData({
-          name: res.data[0].first_name,
-          lastName: res.data[0].last_name,
-          email: res.data[0].email,
+          name: res.data.firstName,
+          lastName: res.data.lastName,
+          email: res.data.email,
         });
       }
       setLoading(false);
     }
   };
 
+  function forEachWish(one) {
+    console.log(one);
+    return (
+      <>
+        <p>{one.wish}</p>
+        <p>{one.desc}</p>
+      </>
+    );
+  }
+
   useEffect(() => {
     fetchUser();
-
-    // fetchLists();
+    fetchLists();
   }, []);
 
   return (
@@ -73,8 +83,40 @@ export default function Home() {
         {loading ? (
           <p className="loading">Loading...</p>
         ) : (
-          // <Lists lists={lists} />
-          <p>wishes go here</p>
+          <div className="articleContainer">
+            {wishes1.map(({ id, first_name, last_name, wishes }) => (
+              <div className="article" key={`random-${id}`}>
+                <h2 className="list-title">{first_name}</h2>
+                <p>{last_name}</p>
+                {console.log(wishes)}
+                {wishes.map(({ wish, desc }) => {
+                  return (
+                    <div>
+                      <p>{wish}</p>
+                      <p>{desc}</p>
+                    </div>
+                  );
+                })}
+
+                {/* <div>
+                  {console.log({ wishes })}
+                  {wishes.forEach((wish) => {
+                    console.log(wish);
+                    forEachWish(wish);
+                  })}
+                </div> */}
+                {/* {loggedIn ? (
+                  <Link to={`/list/${id}`}>
+                    <button className="example_b" align="center" id={id}>
+                      Add/Read comment
+                    </button>
+                  </Link>
+                ) : (
+                  <h5>Please log in to read/add comments</h5>
+                )} */}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </>

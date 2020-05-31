@@ -15,12 +15,34 @@ router.get("/users", async (req, res) => {
   return res.status(200).send(users);
 });
 
+//@route all users and all wishes
+router.get("/userswishes", async (req, res) => {
+  const users = await User.query().withGraphFetched("wishes");
+  return res.status(200).send(users);
+});
+
 //@route GET one user by id + wishes
 router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
   const user = await User.query().where("id", id).withGraphFetched("wishes");
+  console.log(user);
 
-  return res.status(200).send(user);
+  let newUser = {
+    firstName: user[0].first_name,
+    lastName: user[0].last_name,
+    email: user[0].email,
+    wishes: [],
+  };
+
+  user[0].wishes.forEach((wish) => {
+    let newWish = {
+      wish: wish.wish,
+      desc: wish.desc,
+    };
+    newUser.wishes.push(newWish);
+  });
+
+  return res.status(200).send(newUser);
 });
 
 //@route GET all comments for one user
