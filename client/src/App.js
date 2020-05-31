@@ -37,8 +37,14 @@ export default function App() {
     <>
       <BrowserRouter>
         {/* <Header /> */}
-        {loggedIn ? <Home /> : <StartPage />}
+        {/* {loggedIn ? <Home /> : <StartPage />} */}
         <Switch>
+          <Route
+            exact
+            path="/"
+            component={() => (loggedIn ? <Home /> : <StartPage />)}
+          />
+
           <Route path="/home" component={Home} />
           {/* <Route path="/register" component={} /> */}
           <Route path="/login" component={Login} />
