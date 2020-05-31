@@ -1,0 +1,6 @@
+.start-container {
+  text-align: center;
+  display: grid;
+  grid-template-rows: 3fr 4fr 3fr;
+  height: 100vh;
+}

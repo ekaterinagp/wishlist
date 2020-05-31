@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Message from "./Message";
+import Progress from "./Progress";
 
 const Upload = () => {
   const [file, setFile] = useState();
@@ -8,6 +9,7 @@ const Upload = () => {
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [firebaseImage, setFirebaseImage] = useState();
 
   const onChange = (e) => {
     setFile(e.target.files[0]);
@@ -59,6 +61,7 @@ const Upload = () => {
             className="custom-file-input"
             id="customFile"
             onChange={onChange}
+            // onChange={(e) => uploadImage(e, "firebase")}
           />
           <label className="custom-file-label" htmlFor="customFile">
             {fileName}
@@ -79,6 +82,8 @@ const Upload = () => {
           </div>
         </div>
       ) : null}
+      {/* <img src={firebaseImage} />
+      <FileBase type="file" multiple={false} onDone={getBaseFile} /> */}
     </>
   );
 };
