@@ -14,7 +14,7 @@ router.get("/wishes", async (req, res) => {
   const wishes = await Wish.query()
     .withGraphFetched("users")
     .withGraphFetched("comments");
-  return res.status(200).send(wishes);
+  return res.sendStatus(200).send(wishes);
 });
 
 //@route GET  wishe by id + user's name + comment with name
@@ -24,7 +24,7 @@ router.get("/list/:id", async (req, res) => {
     .where({ id: wishID })
     .withGraphFetched("users")
     .withGraphFetched("comments.[users]");
-  return res.status(200).send(list);
+  return res.sendStatus(200).send(list);
 });
 
 //@route POST wish
@@ -36,7 +36,7 @@ router.post("/:id/wish/add", async (req, res) => {
   if (wish && desc) {
     console.log("all fields there");
     if (wish.length < 4) {
-      return res.status(400).send({
+      return res.sendStatus(400).send({
         response: "Wish should be min 4 char",
       });
     } else {
@@ -48,9 +48,9 @@ router.post("/:id/wish/add", async (req, res) => {
           user_id: id,
         });
         console.log(newWish);
-        return res.status(200).send({ wish: newWish.wish });
+        return res.sendStatus(200).send({ wish: newWish.wish });
       } catch (error) {
-        return res.status(500).send({ response: error.message });
+        return res.sendStatus(500).send({ response: error.message });
       }
     }
   } else {
@@ -62,14 +62,14 @@ router.post("/:id/wish/add", async (req, res) => {
 
 router.post("/upload", (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: "No file upload" });
+    return res.sendStatus(400).json({ msg: "No file upload" });
   }
   const file = req.files.file;
 
   file.mv(`${__dirname}/../../uploads/${file.name}`, (err) => {
     if (err) {
       console.log(err);
-      return res.status(500).send(err);
+      return res.sendStatus(500).send(err);
     }
     return res.json({
       fileName: file.name,

@@ -8,7 +8,7 @@ const Comment = require("../../models/Comment");
 router.get("/comments", async (req, res) => {
   const comments = await Comment.query().withGraphFetched("users");
 
-  return res.status(200).send({ response: comments });
+  return res.sendStatus(200).send({ response: comments });
 });
 
 //router add comment
@@ -24,12 +24,12 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
         user_id: userID,
         wish_id: wishID,
       });
-      return res.status(200).send(newComment);
+      return res.sendStatus(200).send(newComment);
     } catch (error) {
-      return res.status(500).send({ response: error.message });
+      return res.sendStatus(500).send({ response: error.message });
     }
   } else {
-    return res.status(400).send({
+    return res.sendStatus(400).send({
       response: "Comment should be more than 3 charcaters",
     });
   }
