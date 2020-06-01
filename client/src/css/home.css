@@ -24,3 +24,11 @@
   text-align: center;
   padding: 1rem;
 }
+.wishOne {
+  display: grid;
+  grid-template-rows: 0.5fr 2fr;
+}
+.wish-title {
+  font-weight: bold;
+  color: blue;
+}

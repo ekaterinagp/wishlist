@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import Header from "./Header";
-import "../css/listcontainer.css";
+import "../css/home.css";
 
 import ListContainer from "./ListContainer";
 // import AddList from "./AddList";
@@ -12,7 +12,7 @@ export default function Home() {
     lastName: "",
     email: "",
   });
-
+  const userID = localStorage.getItem("id");
   const [loading, setLoading] = useState(true);
 
   const [wishes, setWishes] = useState([]);
@@ -84,28 +84,32 @@ export default function Home() {
           <p className="loading">Loading...</p>
         ) : (
           <div className="articleContainer">
-            {wishes.map(({ id, first_name, last_name, wishes }) => (
-              <div className="article" key={`random-${id}`}>
-                <h2 className="list-title">{first_name}</h2>
-                <p>{last_name}</p>
-                {console.log(wishes)}
-                {wishes.map(({ wish, desc, id }) => {
-                  return (
-                    <div key={id}>
-                      <p>{wish}</p>
-                      <p>{desc}</p>
-                    </div>
-                  );
-                })}
+            {console.log(wishes)}
+            {wishes
+              .filter((wish) => wish.id != userID)
+              .map(({ id, first_name, last_name, wishes }) => (
+                <div className="article" key={`random-${id}`}>
+                  <h2 className="list-title">
+                    {first_name} {last_name}
+                  </h2>
 
-                {/* <div>
+                  {wishes.map(({ wish, desc, id }) => {
+                    return (
+                      <div className="wishOne" key={id}>
+                        <p className="wish-title">{wish}</p>
+                        <p className="wish-desc">{desc}</p>
+                      </div>
+                    );
+                  })}
+
+                  {/* <div>
                   {console.log({ wishes })}
                   {wishes.forEach((wish) => {
                     console.log(wish);
                     forEachWish(wish);
                   })}
                 </div> */}
-                {/* {loggedIn ? (
+                  {/* {loggedIn ? (
                   <Link to={`/list/${id}`}>
                     <button className="example_b" align="center" id={id}>
                       Add/Read comment
@@ -114,8 +118,8 @@ export default function Home() {
                 ) : (
                   <h5>Please log in to read/add comments</h5>
                 )} */}
-              </div>
-            ))}
+                </div>
+              ))}
           </div>
         )}
       </div>

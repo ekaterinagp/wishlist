@@ -13,6 +13,7 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const token = localStorage.getItem("auth-token");
+
   const checkUserLoggedIn = async () => {
     if (token) {
       const tokenRes = await axios.post(
@@ -30,6 +31,7 @@ export default function App() {
       setLoggedIn(false);
     }
   };
+
   useEffect(() => {
     checkUserLoggedIn();
   }, []);

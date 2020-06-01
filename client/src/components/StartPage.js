@@ -5,6 +5,22 @@ import "../css/startPage.css";
 import { BrowserRouter, Link } from "react-router-dom";
 
 export default function StartPage() {
+  const [advice, setAdvice] = useState();
+  const [loading, setLoading] = useState(true);
+  const getAdvice = async () => {
+    const res = await axios.get("https://api.adviceslip.com/advice");
+    console.log(res.data.slip.advice);
+    setAdvice(res.data.slip.advice);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getAdvice();
+    const interval = setInterval(() => {
+      getAdvice();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="start-container">
       <div className="top-part">
@@ -21,7 +37,7 @@ export default function StartPage() {
           </BrowserRouter>
         </div>
       </div>
-      <div className="advice-part"></div>
+      <div className="advice-part">{advice}</div>
     </div>
   );
 }
