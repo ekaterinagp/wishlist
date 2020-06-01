@@ -15,14 +15,14 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
 
-  const [wishes1, setWishes] = useState([]);
+  const [wishes, setWishes] = useState([]);
   // const loading = userData.name == null;
 
   const fetchLists = async (e) => {
     setWishes([]);
 
     let res = await axios.get("http://localhost:9090/userswishes");
-    console.log(res.data);
+    console.log(res);
 
     if (res.data.length) {
       console.log(res.data);
@@ -84,14 +84,14 @@ export default function Home() {
           <p className="loading">Loading...</p>
         ) : (
           <div className="articleContainer">
-            {wishes1.map(({ id, first_name, last_name, wishes }) => (
+            {wishes.map(({ id, first_name, last_name, wishes }) => (
               <div className="article" key={`random-${id}`}>
                 <h2 className="list-title">{first_name}</h2>
                 <p>{last_name}</p>
                 {console.log(wishes)}
-                {wishes.map(({ wish, desc }) => {
+                {wishes.map(({ wish, desc, id }) => {
                   return (
-                    <div>
+                    <div key={id}>
                       <p>{wish}</p>
                       <p>{desc}</p>
                     </div>

@@ -12,13 +12,13 @@ const Wish = require("../../models/Wish");
 //@route GET all users
 router.get("/users", async (req, res) => {
   const users = await User.query().select();
-  return res.sendStatus(200).send(users);
+  return res.send(users);
 });
 
 //@route all users and all wishes
 router.get("/userswishes", async (req, res) => {
   const users = await User.query().withGraphFetched("wishes");
-  return res.sendStatus(200).send(users);
+  return res.send(users);
 });
 
 //@route GET one user by id + wishes
@@ -42,14 +42,14 @@ router.get("/user/:id", async (req, res) => {
     newUser.wishes.push(newWish);
   });
 
-  return res.sendStatus(200).send(newUser);
+  return res.send(newUser);
 });
 
 //@route GET all comments for one user
 router.get("/wishlist/:id", async (req, res) => {
   const id = req.params.id;
   const user = await Comment.query().where("to_user_id", id);
-  return res.sendStatus(200).send(user);
+  return res.send(user);
 });
 
 //@route POST register user
@@ -71,9 +71,7 @@ router.post("/register", (req, res) => {
     } else {
       bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
         if (error) {
-          return res
-            .sendStatus(500)
-            .send({ message: "error hashing password" });
+          return res.send({ message: "error hashing password" });
         }
         try {
           const existingUser = await User.query()
@@ -82,7 +80,7 @@ router.post("/register", (req, res) => {
             .limit(1);
 
           if (existingUser[0]) {
-            return res.sendStatus(404).send({ res: "User already exists" });
+            return res.send({ res: "User already exists" });
           } else {
             const newUser = await User.query().insert({
               first_name: firstName,
@@ -91,10 +89,10 @@ router.post("/register", (req, res) => {
               password: hashedPassword,
             });
 
-            return res.sendStatus(200).send({ email: newUser.email });
+            return res.send({ email: newUser.email });
           }
         } catch (error) {
-          return res.sendStatus(500).send({ res: error.message });
+          return res.send({ res: error.message });
         }
       });
     }
@@ -103,7 +101,7 @@ router.post("/register", (req, res) => {
       .status(404)
       .send({ res: "Password and repeated password are not the same" });
   } else {
-    return res.sendStatus(404).send({ res: "Missing fields" });
+    return res.send({ res: "Missing fields" });
   }
 });
 
@@ -125,8 +123,7 @@ router.post("/login", async (req, res) => {
 
     if (email && password) {
       bcrypt.compare(password, user.password).then((isMatch) => {
-        if (!isMatch)
-          return res.sendStatus(400).json({ message: "Wrong password" });
+        if (!isMatch) return res.json({ message: "Wrong password" });
         jwt.sign(
           { id: user.id },
           config.get("jwtSecret"),
@@ -167,14 +164,14 @@ router.post("/change-password/:id", async (req, res) => {
     if (email && password && newPassword) {
       bcrypt.compare(password, user.password, function (err, hash) {
         if (err) {
-          return res.sendStatus(400).json({ message: "Wrong password" });
+          return res.json({ message: "Wrong password" });
         }
         if (res) {
           console.log("old password matched");
           if (newPassword < 8) {
-            return res
-              .status(400)
-              .send({ res: "Password does not fulfill the requirements" });
+            return res.send({
+              res: "Password does not fulfill the requirements",
+            });
           } else {
             console.log("new password will be hashed");
             bcrypt.hash(
@@ -183,18 +180,16 @@ router.post("/change-password/:id", async (req, res) => {
               async (error, hashedPassword) => {
                 console.log(hashedPassword);
                 if (error) {
-                  return res
-                    .status(500)
-                    .send({ message: "error hashing password" });
+                  return res.send({ message: "error hashing password" });
                 }
                 try {
                   const updatedUser = await User.query()
                     .update({ password: hashedPassword })
                     .where("id", userId);
                   console.log(updatedUser);
-                  return res.sendStatus(200).send({ updatedUser });
+                  return res.send({ updatedUser });
                 } catch (error) {
-                  return res.sendStatus(500).send({ res: error.message });
+                  return res.send({ res: error.message });
                 }
               }
             );
@@ -205,7 +200,7 @@ router.post("/change-password/:id", async (req, res) => {
       });
     }
   } catch (error) {
-    res.sendStatus(500).json({ error: error.message });
+    res.json({ error: error.message });
   }
 });
 
@@ -215,7 +210,7 @@ router.delete("/delete/:id", auth, async (req, res) => {
     const deletedUser = await User.query().delete().where({ id: userId });
     res.json(deletedUser);
   } catch (err) {
-    res.sendStatus(500).json({ error: err.message });
+    res.json({ error: err.message });
   }
 });
 
@@ -234,7 +229,7 @@ router.post("/tokenIsValid", async (req, res) => {
 
     return res.json(true);
   } catch (err) {
-    res.sendStatus(500).json({ error: err.message });
+    res.json({ error: err.message });
   }
 });
 

@@ -8,7 +8,7 @@ const Comment = require("../../models/Comment");
 router.get("/comments", async (req, res) => {
   const comments = await Comment.query().withGraphFetched("users");
 
-  return res.sendStatus(200).send({ response: comments });
+  return res.send({ response: comments });
 });
 
 //router add comment
@@ -24,7 +24,7 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
         user_id: userID,
         wish_id: wishID,
       });
-      return res.sendStatus(200).send(newComment);
+      return res.send(newComment);
     } catch (error) {
       return res.sendStatus(500).send({ response: error.message });
     }

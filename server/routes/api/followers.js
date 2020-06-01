@@ -7,7 +7,7 @@ const Follower = require("../../models/Follower");
 router.get("/followers", async (req, res) => {
   const following = await User.query().withGraphFetched("followers");
   // .withGraphFetched("users.[followers]");
-  return res.sendStatus(200).send(following);
+  return res.send(following);
 });
 
 //@route GET a user and who user follows
@@ -16,7 +16,7 @@ router.get("/followers/:id", async (req, res) => {
   const following = await Follower.query()
     .where("user_id", userID)
     .withGraphFetched("users");
-  return res.res.sendStatus(200).send(following);
+  return res.send(following);
 });
 
 //@route POST add a user to follow
@@ -29,9 +29,9 @@ router.post("/follow", async (req, res) => {
         user_id: user_id,
         follower_id: follower_id,
       });
-      return res.res.sendStatus(200).send(newFollowing);
+      return res.res.send(newFollowing);
     } catch (error) {
-      return res.res.sendStatus(500).send({ res: error.message });
+      return res.send({ res: error.message });
     }
   }
 });
@@ -46,9 +46,9 @@ router.delete("/unfollow", async (req, res) => {
         .where("follower_id", follower_id)
         .where("user_id", user_id)
         .delete();
-      return res.sendStatus(200).send(unfollow);
+      return res.send(unfollow);
     } catch (error) {
-      return res.sendStatus(500).send({ res: error.message });
+      return res.send({ res: error.message });
     }
   }
 });
