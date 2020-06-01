@@ -43,6 +43,7 @@ export default function Header() {
   const sendMail = () => history.push("/sendMail");
   const resetPassword = () => history.push("/resetPassword");
   const home = () => history.push("/home");
+  const wishlist = () => history.push("/wishlist");
 
   const logOut = () => {
     setUserData({
@@ -70,12 +71,12 @@ export default function Header() {
                 Profile
               </NavLink> */}
               <NavLink
-                to="/profile"
+                to="/wishlist"
                 activeClassName="active"
                 tag={RRNavLink}
-                onClick={profile}
+                onClick={wishlist}
               >
-                Profile
+                Wish list
               </NavLink>
               <Button color="primary" onClick={logOut}>
                 Log out

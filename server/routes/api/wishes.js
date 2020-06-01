@@ -19,9 +19,9 @@ router.get("/wishes", async (req, res) => {
 
 //@route GET  wishe by id + user's name + comment with name
 router.get("/list/:id", async (req, res) => {
-  const wishID = req.params.id;
+  const user_id = req.params.id;
   let list = await Wish.query()
-    .where({ id: wishID })
+    .where({ user_id: user_id })
     .withGraphFetched("users")
     .withGraphFetched("comments.[users]");
   return res.send(list);

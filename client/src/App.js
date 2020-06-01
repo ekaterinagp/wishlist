@@ -8,6 +8,8 @@ import axios from "axios";
 import "./App.css";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import Register from "./components/Register";
+import UserWishlist from "./components/UserWishlist";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -48,8 +50,9 @@ export default function App() {
           />
 
           <Route path="/home" component={Home} />
-          {/* <Route path="/register" component={} /> */}
+          <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/wishlist" component={UserWishlist} />
 
           {/* <Route path="/sendMail" component={} /> */}
           {/* <Route exact path="/list/:listId" component={} /> */}
