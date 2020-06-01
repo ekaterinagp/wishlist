@@ -37,6 +37,22 @@ exports.up = function (knex) {
         .references("wishes.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
+    })
+    .createTable("followers", (table) => {
+      table.increments("id");
+      table.timestamp("created_at").defaultTo(knex.fn.now());
+      table.integer("user_id").unsigned().notNullable();
+      table
+        .foreign("user_id")
+        .references("users.id")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
+      table.integer("follower_id").unsigned().notNullable();
+      table
+        .foreign("follower_id")
+        .references("users.id")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
     });
 };
 

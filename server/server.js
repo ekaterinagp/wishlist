@@ -36,6 +36,7 @@ const authLimiter = rateLimit({
 });
 
 const usersRouter = require("./routes/api/users");
+const followersRouter = require("./routes/api/followers");
 
 const wishesRouter = require("./routes/api/wishes");
 // const sendMailRouter = require("./routes/api/sendMail");
@@ -43,6 +44,7 @@ const commentsRouter = require("./routes/api/comments");
 app.use(usersRouter, authLimiter);
 app.use(wishesRouter);
 app.use(commentsRouter);
+app.use(followersRouter);
 // app.use(sendMailRouter);
 
 const server = app.listen(port, (error) => {
