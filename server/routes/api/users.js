@@ -46,11 +46,11 @@ router.get("/user/:id", async (req, res) => {
 });
 
 //@route GET all comments for one user
-router.get("/wishlist/:id", async (req, res) => {
-  const id = req.params.id;
-  const user = await Comment.query().where("to_user_id", id);
-  return res.send(user);
-});
+// router.get("/wishlist/:id", async (req, res) => {
+//   const id = req.params.id;
+//   const user = await Comment.query().where("to_user_id", id);
+//   return res.send(user);
+// });
 
 //@route POST register user
 router.post("/register", (req, res) => {

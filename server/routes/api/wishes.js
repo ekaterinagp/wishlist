@@ -20,11 +20,59 @@ router.get("/wishes", async (req, res) => {
 //@route GET  wishe by id + user's name + comment with name
 router.get("/list/:id", async (req, res) => {
   const user_id = req.params.id;
+  let user = {
+    name: null,
+    lastName: null,
+    email: null,
+    wishes: [],
+  };
+  let oneWish = {
+    wish: null,
+    desc: null,
+    created: null,
+    comments: [],
+  };
+
+  let oneComment = {
+    text: null,
+    created: null,
+    firstName: null,
+    lastName: null,
+  };
   let list = await Wish.query()
     .where({ user_id: user_id })
     .withGraphFetched("users")
     .withGraphFetched("comments.[users]");
-  return res.send(list);
+  console.log(list);
+  list.forEach((list) => {
+    user = {
+      name: list.users.first_name,
+      lastName: list.users.last_name,
+      email: list.users.email,
+      wishes: [],
+    };
+  });
+
+  list.forEach((list) => {
+    oneWish = {
+      wish: list.wish,
+      desc: list.desc,
+      created: list.created_at,
+      comments: [],
+    };
+    user.wishes.push(oneWish);
+    list.comments.forEach((comment) => {
+      oneComment = {
+        text: comment.text,
+        created: comment.created_at,
+        firstName: comment.users.first_name,
+        lastName: comment.users.last_name,
+      };
+      oneWish.comments.push(oneComment);
+    });
+  });
+
+  return res.send(user);
 });
 
 //@route POST wish

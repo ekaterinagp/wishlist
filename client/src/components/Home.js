@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import Header from "./Header";
+import { Link } from "react-router-dom";
 import "../css/home.css";
 
 import ListContainer from "./ListContainer";
 // import AddList from "./AddList";
 
 export default function Home() {
+  let loggedIn = localStorage.getItem("id");
   const [userData, setUserData] = useState({
     name: "",
     lastName: "",
@@ -93,31 +95,28 @@ export default function Home() {
                     {first_name} {last_name}
                   </h2>
 
-                  {wishes.map(({ wish, desc, id }) => {
-                    return (
-                      <div className="wishOne" key={id}>
-                        <p className="wish-title">{wish}</p>
-                        <p className="wish-desc">{desc}</p>
-                      </div>
-                    );
-                  })}
+                  {wishes.length ? (
+                    wishes.map(({ wish, desc, id }) => {
+                      return (
+                        <div className="wishOne" key={id}>
+                          <p className="wish-title">{wish}</p>
+                          <p className="wish-desc">{desc}</p>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No wishes yet</p>
+                  )}
 
-                  {/* <div>
-                  {console.log({ wishes })}
-                  {wishes.forEach((wish) => {
-                    console.log(wish);
-                    forEachWish(wish);
-                  })}
-                </div> */}
-                  {/* {loggedIn ? (
-                  <Link to={`/list/${id}`}>
-                    <button className="example_b" align="center" id={id}>
-                      Add/Read comment
-                    </button>
-                  </Link>
-                ) : (
-                  <h5>Please log in to read/add comments</h5>
-                )} */}
+                  {loggedIn ? (
+                    <Link to={`/list/${id}`}>
+                      <button className="example_b" align="center" id={id}>
+                        Read more
+                      </button>
+                    </Link>
+                  ) : (
+                    <h5>Please log in to read/add comments</h5>
+                  )}
                 </div>
               ))}
           </div>

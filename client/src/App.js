@@ -10,6 +10,8 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import UserWishlist from "./components/UserWishlist";
+import SingleWishList from "./components/SingleWishList";
+import ResetPassword from "./components/ResetPassword";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -53,10 +55,10 @@ export default function App() {
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/wishlist" component={UserWishlist} />
-
+          <Route exact path="/list/:listId" component={SingleWishList} />
           {/* <Route path="/sendMail" component={} /> */}
           {/* <Route exact path="/list/:listId" component={} /> */}
-          {/* <Route path="/resetPassword" component={} /> */}
+          <Route path="/resetPassword" component={ResetPassword} />
         </Switch>
       </BrowserRouter>
     </>

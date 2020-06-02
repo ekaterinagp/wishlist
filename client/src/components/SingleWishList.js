@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
-import "../css/profile.css";
-import { useHistory, Link } from "react-router-dom";
+
 // import AddComment from "./AddComment";
 import axios from "axios";
 import Header from "./Header";
-import ResetPassword from "./ResetPassword";
 
-export default function UserWishlist() {
-  const history = useHistory();
-  const resetPassword = () => history.push("/resetPassword");
+export default function List({ match }) {
+  let params = match.params;
+  console.log(params);
   const [wishlist, setWishList] = useState();
-  const [loading, setLoading] = useState(true);
-  const [notAuth, setNotAuth] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
     lastName: "",
     email: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [notAuth, setNotAuth] = useState(false);
 
   const fetchDetailsCommentsWishes = async () => {
-    let userId = localStorage.getItem("id");
-    const res = await axios.get(`http://localhost:9090/list/${userId}`);
+    const res = await axios.get(`http://localhost:9090/list/${params.listId}`);
 
-    console.log(res.data);
+    console.log(res);
 
     if (res.data.wishes) {
       setWishList(res.data.wishes);
@@ -51,9 +48,6 @@ export default function UserWishlist() {
       ) : (
         <>
           <Header />
-          <Link to="/resetPassword" onClick={resetPassword}>
-            Reset password
-          </Link>
           <div>
             {loading ? (
               <p className="loading">Loading...</p>
@@ -71,7 +65,7 @@ export default function UserWishlist() {
                     <p> Please log in </p>
                   )}
                 </div>
-                {/* {console.log(wishlist)} */}
+                {console.log(wishlist)}
                 {wishlist.length ? (
                   <div className="user-wishes">
                     {wishlist.map(({ id, wish, desc, comments }) => (
@@ -79,17 +73,23 @@ export default function UserWishlist() {
                         <h2 className="list-title">{wish}</h2>
                         <p>{desc}</p>
 
-                        {/* {comments.map(({ text, id }) => {
-                          return (
-                            <div className="commentOne" key={id}>
-                              <p className="comment-text">{text}</p>
-                              <p className="comment-author">
-                                {firstName} {lastName}
-                              </p>
-                              <p className="comment-time">{users.created_at}</p>
-                            </div>
-                          );
-                        })} */}
+                        {comments.length ? (
+                          comments.map(
+                            ({ text, id, firstName, lastName, created }) => {
+                              return (
+                                <div className="commentOne" key={id}>
+                                  <p className="comment-text">{text}</p>
+                                  <p className="comment-author">
+                                    {firstName} {lastName}
+                                  </p>
+                                  <p className="comment-time">{created}</p>
+                                </div>
+                              );
+                            }
+                          )
+                        ) : (
+                          <p>No comments yet</p>
+                        )}
                       </div>
                     ))}
                   </div>

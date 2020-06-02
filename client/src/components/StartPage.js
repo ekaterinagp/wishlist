@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Login from "./Login";
 import "../css/startPage.css";
-import { BrowserRouter, Link } from "react-router-dom";
+import { useHistory, BrowserRouter, Link } from "react-router-dom";
 
 export default function StartPage() {
+  const history = useHistory();
+  const register = () => history.push("/register");
   const [advice, setAdvice] = useState();
   const [loading, setLoading] = useState(true);
   const getAdvice = async () => {
@@ -33,7 +35,9 @@ export default function StartPage() {
         <div className="not-registered">
           <p>Not registered? Sign up</p>{" "}
           <BrowserRouter>
-            <Link to="/register">Sign up</Link>
+            <Link to="/register" onClick={register}>
+              Sign up
+            </Link>
           </BrowserRouter>
         </div>
       </div>

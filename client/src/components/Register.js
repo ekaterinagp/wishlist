@@ -33,7 +33,7 @@ export default function Register() {
       console.log(user);
       localStorage.setItem("auth-token", loginRes.data.token);
       localStorage.setItem("id", loginRes.data.user.id);
-      history.push("/");
+      history.push("/home");
     } catch (error) {
       error.response.data.msg && setError(error.response.data.msg);
     }

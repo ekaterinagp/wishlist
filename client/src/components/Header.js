@@ -52,7 +52,8 @@ export default function Header() {
     });
     localStorage.setItem("auth-token", "");
     localStorage.setItem("id", "");
-    window.location.reload();
+    // window.location.reload();
+    history.push("/");
   };
 
   return (
@@ -62,14 +63,6 @@ export default function Header() {
         <Nav className="mr-auto" navbar>
           {token ? (
             <>
-              {/* <NavLink
-                to="/home"
-                activeClassName="active"
-                tag={RRNavLink}
-                onClick={home}
-              >
-                Profile
-              </NavLink> */}
               <NavLink
                 to="/wishlist"
                 activeClassName="active"
