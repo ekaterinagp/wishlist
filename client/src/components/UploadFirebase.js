@@ -5,27 +5,28 @@ import uui from "uuidv4";
 import axios from "axios";
 
 const UploadFirebase = (props) => {
+  console.log(props);
   // console.log(props.wishID);
-  const allInputs = { imgUrl: "" };
+  // const allInputs = {  };
   const [imageAsFile, setImageAsFile] = useState("");
-  const [imageAsUrl, setImageAsUrl] = useState(allInputs);
+  const [imageAsUrl, setImageAsUrl] = useState(props.img);
 
   // console.log(imageAsFile);
   const handleImageAsFile = (e) => {
     const image = e.target.files[0];
     console.log("name?", image.name);
     setImageAsFile((imageFile) => image);
-    // addLink(image.name);
     console.log(imageAsFile);
   };
 
   const addLink = async (img) => {
     console.log(img);
-    const imgUrl = {
-      imgUrl: img,
-    };
+    const regex = /.+?(?=&)/g;
+    const modified = img.imgUrl.match(regex)[0];
     const res = await axios
-      .post(`http://localhost:9090/${props.wishID}/image/add`, imgUrl)
+      .post(`http://localhost:9090/${props.wishID}/image/add`, {
+        imgUrl: modified,
+      })
       .catch((error) => console.log(error));
     console.log(res);
   };
@@ -54,7 +55,6 @@ const UploadFirebase = (props) => {
         console.log(err);
       },
       () => {
-        addLink(imageAsFile);
         // gets the functions from storage refences the image storage in firebase by the children
         // gets the download url then sets the image from firebase as the value for the imgUrl key:
         storage
@@ -72,28 +72,31 @@ const UploadFirebase = (props) => {
   };
 
   // let ref = firebase.storage().ref();
-  // var starsRef = ref.child(
-  //   "images/41946020_2376465382368423_2354478531678830592_n.jpg"
-  // );
+  // var starsRef = ref.child("images/IMG_20190801_143325.jpg");
 
   // starsRef.getDownloadURL().then(function (url) {
-  //   setImageAsUrl({
-  //     imgUrl: url,
-  //   });
-  //
+  //   console.log(url);
+  //   // setImageAsUrl({
+  //   //   imgUrl: url,
+  //   // });
   // });
 
   useEffect(() => {
-    addLink(imageAsFile.name);
-  }, [imageAsFile]);
-  console.log(imageAsFile);
+    // console.log(JSON.stringify(imageAsUrl));
+    if (imageAsUrl !== props.img) {
+      console.log(imageAsUrl);
+      addLink(imageAsUrl);
+    }
+  }, [imageAsUrl]);
+
+  console.log(imageAsUrl);
   return (
     <div>
       <form onSubmit={handleFireBaseUpload}>
         <input type="file" onChange={handleImageAsFile} />
         <button>upload to firebase</button>
       </form>
-      <img src={imageAsUrl.imgUrl} alt="image tag" />
+      <img src={imageAsUrl} alt="image tag" />
     </div>
   );
 };

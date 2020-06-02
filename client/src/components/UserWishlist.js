@@ -25,7 +25,7 @@ export default function UserWishlist() {
       .get(`http://localhost:9090/list/${userId}`)
       .catch((error) => console.log(error));
 
-    // console.log(res.data);
+    console.log(res.data);
 
     if (res.data.wishes) {
       setWishList(res.data.wishes);
@@ -77,13 +77,13 @@ export default function UserWishlist() {
                 {/* {console.log(wishlist)} */}
                 {wishlist.length ? (
                   <div className="user-wishes">
-                    {wishlist.map(({ id, wish, desc, comments }) => (
+                    {wishlist.map(({ id, wish, desc, comments, imgURL }) => (
                       <div className="article" key={`random-${desc}`}>
                         <div className="top-div-wish">
                           <h2 className="list-title">{wish}</h2>
                           <p className="description">{desc}</p>
                           <div id={id}>
-                            <UploadFirebase wishID={id} />
+                            <UploadFirebase wishID={id} img={imgURL} />
                           </div>
                         </div>
                         <div className="middle-div-comments">

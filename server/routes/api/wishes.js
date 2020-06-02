@@ -30,6 +30,7 @@ router.get("/list/:id", async (req, res) => {
     id: null,
     wish: null,
     desc: null,
+    imgURL: null,
     created: null,
     comments: [],
   };
@@ -59,6 +60,7 @@ router.get("/list/:id", async (req, res) => {
       id: list.id,
       wish: list.wish,
       desc: list.desc,
+      imgURL: list.imgURL,
       created: list.created_at,
       comments: [],
     };
