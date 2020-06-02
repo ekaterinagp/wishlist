@@ -2,3 +2,7 @@
   display: grid;
   grid-template-columns: 2fr 4fr;
 }
+
+.middle-div-comments {
+  background-color: rgb(207, 206, 206);
+}

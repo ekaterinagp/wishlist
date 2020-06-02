@@ -10,16 +10,6 @@
   grid-gap: 2rem;
 }
 
-.article {
-  margin: 1rem;
-  width: 300px;
-  border: 1px #351f1f solid;
-  padding: 1rem;
-  display: grid;
-  grid-template-rows: 1fr;
-  /* cursor: pointer; */
-}
-
 .list-title {
   text-align: center;
   padding: 1rem;

@@ -30,7 +30,7 @@ export default function App() {
         }
       );
       setLoggedIn(true);
-      console.log(tokenRes);
+      // console.log(tokenRes);
     } else {
       setLoggedIn(false);
     }

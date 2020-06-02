@@ -207,3 +207,17 @@ body {
   color: blue;
   padding-top: 100px;
 }
+
+.article {
+  margin: 1rem;
+
+  border: 1px #351f1f solid;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: 1fr;
+  /* cursor: pointer; */
+}
+
+.description {
+  font-size: 20px;
+}

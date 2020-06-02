@@ -41,7 +41,7 @@ export default function Header() {
   const profile = () => history.push("/profile");
   const login = () => history.push("/login");
   const sendMail = () => history.push("/sendMail");
-  const resetPassword = () => history.push("/resetPassword");
+  // const resetPassword = () => history.push("/resetPassword");
   const home = () => history.push("/home");
   const wishlist = () => history.push("/wishlist");
 
@@ -74,7 +74,7 @@ export default function Header() {
               <Button color="primary" onClick={logOut}>
                 Log out
               </Button>
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   to="/resetPassword"
                   activeClassName="active"
@@ -83,7 +83,7 @@ export default function Header() {
                 >
                   Reset password
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </>
           ) : (
             <>

@@ -150,6 +150,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//@route reset password
 router.post("/change-password/:id", async (req, res) => {
   try {
     const { email, password, newPassword } = req.body;

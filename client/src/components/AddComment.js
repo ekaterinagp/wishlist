@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import "../css/Article.css";
+// import "../css/Article.css";
 import axios from "axios";
 
 const AddComment = (props) => {
   const [text, setText] = useState();
-  console.log(props.listId);
+  // console.log(props.listId);
   const loggedIn = localStorage.getItem("id");
   const listId = props.listId;
 
   const addNewComment = async (e) => {
-    console.log(localStorage.getItem("id"));
+    // console.log(localStorage.getItem("id"));
 
     e.preventDefault();
-    console.log({ text });
+    // console.log({ text });
     try {
       setText("");
       const userid = localStorage.getItem("id");
@@ -22,7 +22,7 @@ const AddComment = (props) => {
           `http://localhost:9090/${userid}/comment/list/${listId}`,
           comment
         );
-        console.log(addedCommentRes);
+        // console.log(addedCommentRes);
         props.parentMethod();
       }
     } catch (error) {

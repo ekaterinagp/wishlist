@@ -27,6 +27,7 @@ router.get("/list/:id", async (req, res) => {
     wishes: [],
   };
   let oneWish = {
+    id: null,
     wish: null,
     desc: null,
     created: null,
@@ -55,6 +56,7 @@ router.get("/list/:id", async (req, res) => {
 
   list.forEach((list) => {
     oneWish = {
+      id: list.id,
       wish: list.wish,
       desc: list.desc,
       created: list.created_at,
@@ -106,6 +108,32 @@ router.post("/:id/wish/add", async (req, res) => {
   }
 });
 
+//@route for save image path to db
+router.post("/:id/image/add", async (req, res) => {
+  const wishID = req.params.id;
+  console.log(req.body);
+  const { imgUrl } = req.body;
+
+  if (imgUrl) {
+    console.log("all fields there");
+    console.log(imgUrl);
+    try {
+      console.log("we are in a try");
+      const updatedLink = await Wish.query()
+        .update({ imgURL: imgUrl })
+        .where("id", wishID);
+
+      console.log(updatedLink);
+      return res.send({ updatedLink });
+    } catch (error) {
+      return res.send({ response: error.message });
+    }
+  } else {
+    return res.send({ response: "Fields are not filled correctly" });
+  }
+});
+
+//@route ti upload image
 router.post("/upload", (req, res) => {
   if (req.files === null) {
     return res.json({ msg: "No file upload" });
@@ -117,6 +145,7 @@ router.post("/upload", (req, res) => {
       console.log(err);
       return res.send(err);
     }
+
     return res.json({
       fileName: file.name,
       filePath: `../../uploads/${file.name}`,
