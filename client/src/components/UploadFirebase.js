@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { storage } from "./firebase-config";
+import { firebase } from "./firebase-config";
 import uui from "uuidv4";
 import axios from "axios";
 
 const UploadFirebase = (props) => {
-  console.log(props.wishID);
+  // console.log(props.wishID);
   const allInputs = { imgUrl: "" };
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
 
-  console.log(imageAsFile);
+  // console.log(imageAsFile);
   const handleImageAsFile = (e) => {
     const image = e.target.files[0];
-    // image["id"] = Math.floor(Math.random() * 20000);
-    // image.name = Math.floor(Math.random() * 20000) + ".png";
+    console.log("name?", image.name);
     setImageAsFile((imageFile) => image);
+    // addLink(image.name);
+    console.log(imageAsFile);
   };
 
   const addLink = async (img) => {
-    console.log({ img });
-    // console.log(JSON.stringify(img.imgUrl));
-    // img = JSON.stringify(img.imgUrl);
-
+    console.log(img);
+    const imgUrl = {
+      imgUrl: img,
+    };
     const res = await axios
-      .post(`http://localhost:9090/${props.wishID}/image/add`, img)
+      .post(`http://localhost:9090/${props.wishID}/image/add`, imgUrl)
       .catch((error) => console.log(error));
     console.log(res);
   };
@@ -68,10 +70,23 @@ const UploadFirebase = (props) => {
       }
     );
   };
+
+  // let ref = firebase.storage().ref();
+  // var starsRef = ref.child(
+  //   "images/41946020_2376465382368423_2354478531678830592_n.jpg"
+  // );
+
+  // starsRef.getDownloadURL().then(function (url) {
+  //   setImageAsUrl({
+  //     imgUrl: url,
+  //   });
+  //
+  // });
+
   useEffect(() => {
-    addLink(imageAsUrl);
-  }, [imageAsUrl]);
-  console.log(imageAsUrl);
+    addLink(imageAsFile.name);
+  }, [imageAsFile]);
+  console.log(imageAsFile);
   return (
     <div>
       <form onSubmit={handleFireBaseUpload}>

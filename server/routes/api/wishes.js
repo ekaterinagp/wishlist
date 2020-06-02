@@ -113,7 +113,7 @@ router.post("/:id/image/add", async (req, res) => {
   const wishID = req.params.id;
   console.log(req.body);
   const { imgUrl } = req.body;
-
+  console.log(imgUrl);
   if (imgUrl) {
     console.log("all fields there");
     console.log(imgUrl);

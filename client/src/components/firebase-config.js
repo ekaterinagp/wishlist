@@ -12,8 +12,9 @@ var firebaseConfig = {
   measurementId: "G-Y24WL2NCJ0",
 };
 
-firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 let storage = firebase.storage();
 
-export { storage, firebase as default };
+export { storage, firebase };
+// export default firebaseApp;
