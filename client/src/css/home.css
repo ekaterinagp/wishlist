@@ -55,6 +55,7 @@ ul.mr-auto navbar-nav {
 
 .wishes-middle {
   height: 120px;
+  overflow: hidden;
 }
 
 .no-wishes {

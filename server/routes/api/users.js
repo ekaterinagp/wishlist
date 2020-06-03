@@ -150,6 +150,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//@route if token is valid
+router.post("/tokenIsValid", async (req, res) => {
+  try {
+    const token = req.header("x-auth-token");
+    console.log(token);
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, jwSecret);
+    console.log(verified.id);
+    if (!verified) return res.json(false);
+
+    const user = await User.query().select().where({ id: verified.id });
+    if (!user) return res.json(false);
+
+    return res.json(true);
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
+
 //@route reset password
 router.post("/change-password/:id", async (req, res) => {
   try {
@@ -205,30 +225,12 @@ router.post("/change-password/:id", async (req, res) => {
   }
 });
 
+//@route delete wish
 router.delete("/delete/:id", auth, async (req, res) => {
   const userId = req.params.id;
   try {
     const deletedUser = await User.query().delete().where({ id: userId });
     res.json(deletedUser);
-  } catch (err) {
-    res.json({ error: err.message });
-  }
-});
-
-router.post("/tokenIsValid", async (req, res) => {
-  try {
-    const token = req.header("x-auth-token");
-    console.log(token);
-    if (!token) return res.json(false);
-
-    const verified = jwt.verify(token, jwSecret);
-    console.log(verified.id);
-    if (!verified) return res.json(false);
-
-    const user = await User.query().select().where({ id: verified.id });
-    if (!user) return res.json(false);
-
-    return res.json(true);
   } catch (err) {
     res.json({ error: err.message });
   }

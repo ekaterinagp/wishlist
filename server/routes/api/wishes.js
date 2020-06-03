@@ -8,6 +8,7 @@ const config = require("config");
 const User = require("../../models/User");
 // const Comment = require("../../models/Comment");
 const Wish = require("../../models/Wish");
+const auth = require("../../middleware/auth");
 
 //@route GET all wishes with all comments and user's data
 router.get("/wishes", async (req, res) => {
@@ -155,12 +156,14 @@ router.post("/upload", (req, res) => {
   });
 });
 
-// router.post("/upload", (req,res)=>{
-//   const newImage={
-//     imageName:req.body.imageName,
-//     imageData:req.body.imageData
-//   }
-
-// })
+router.delete("/deletewish/:id", auth, async (req, res) => {
+  const wishId = req.params.id;
+  try {
+    const deletedWish = await Wish.query().delete().where({ id: wishId });
+    res.json({ msg: "wish is deleted" });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
 
 module.exports = router;

@@ -7,6 +7,7 @@ import Header from "./Header";
 import UploadFirebase from "./UploadFirebase";
 import ResetPassword from "./ResetPassword";
 import AddWish from "./AddWish";
+import Notification from "./Notification";
 
 export default function UserWishlist() {
   const history = useHistory();
@@ -14,9 +15,13 @@ export default function UserWishlist() {
   const [currentOpenState, setCurrentOpenState] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const resetPassword = () => history.push("/resetPassword");
-  const [wishlist, setWishList] = useState();
+  const [wishlist, setWishList] = useState("");
   const [loading, setLoading] = useState(true);
   const [notAuth, setNotAuth] = useState(false);
+  const [notification, setNotification] = useState({
+    msg: "",
+    id: "",
+  });
   const [userData, setUserData] = useState({
     name: "",
     lastName: "",
@@ -25,6 +30,7 @@ export default function UserWishlist() {
 
   let userId = localStorage.getItem("id");
   const fetchDetailsCommentsWishes = async () => {
+    console.log("called from child");
     const res = await axios
       .get(`http://localhost:9090/list/${userId}`)
       .catch((error) => console.log(error));
@@ -43,7 +49,23 @@ export default function UserWishlist() {
     setLoading(false);
   };
 
-  const toggle = () => {
+  const fetchUserDetails = async () => {
+    const res = await axios
+      .get(`http://localhost:9090/user/${userId}`)
+      .catch((error) => console.log(error));
+
+    console.log(res.data);
+
+    setUserData({
+      name: res.data.firstName,
+      lastName: res.data.lastName,
+      email: res.data.email,
+    });
+
+    setLoading(false);
+  };
+
+  const openComments = () => {
     setIsOpen(!isOpen);
   };
 
@@ -65,12 +87,50 @@ export default function UserWishlist() {
     setIsOpen(currentOpenState);
   };
 
+  const confirmDelete = (e) => {
+    resetState();
+    const id = e.target.id;
+    console.log(id);
+    setNotification({
+      msg: "Are you sure you want to delete this wish?",
+      id: id,
+    });
+    console.log(notification);
+  };
+
+  const deleteWish = async (id) => {
+    const token = localStorage.getItem("token");
+    const res = await axios
+      .delete(`http://localhost:9090/deletewish/${id}`, token)
+      .catch((error) => console.log(error));
+
+    console.log(res);
+    window.location.reload(false);
+  };
+
+  const resetState = () => {
+    setNotification({
+      msg: "",
+      id: "",
+    });
+    window.location.reload(false);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("id")) {
+      fetchUserDetails();
+    } else {
+      setNotAuth(true);
+    }
+  }, []);
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       fetchDetailsCommentsWishes();
     } else {
       setNotAuth(true);
     }
+    console.log(notification);
   }, []);
 
   return (
@@ -108,7 +168,9 @@ export default function UserWishlist() {
                         </div>{" "}
                         <div className="followers">
                           <p>Items </p>
-                          <p className="follow-number">{wishlist.length}</p>
+                          <p className="follow-number">
+                            {!wishlist ? "0" : wishlist.length}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -116,22 +178,42 @@ export default function UserWishlist() {
                     <p> Please log in </p>
                   )}
                 </div>
-                {/* {console.log(wishlist)} */}
+                {console.log(wishlist)}
+                {notification.msg ? (
+                  <Notification
+                    msg={notification.msg}
+                    id={notification.id}
+                    parentMethod={deleteWish}
+                    resetState={resetState}
+                  />
+                ) : null}
                 {wishlist.length ? (
                   <div className="user-wishes">
                     {wishlist.map(({ id, wish, desc, comments, imgURL }) => (
                       <div className="article" key={`random-${desc}`}>
                         <div className="top-div-wish">
+                          {" "}
+                          <p
+                            id={id}
+                            className="delete-btn"
+                            onClick={confirmDelete}
+                          >
+                            &#10006;
+                          </p>
                           <h2 className="list-title">{wish}</h2>
                           <p className="description">{desc}</p>
                           <div id={id}>
-                            <UploadFirebase wishID={id} img={imgURL} />
+                            <UploadFirebase
+                              wishID={id}
+                              img={imgURL}
+                              parentMethod={fetchDetailsCommentsWishes}
+                            />
                           </div>
                         </div>
                         <button
                           id={id}
                           className="example_b toggle"
-                          onClick={toggle}
+                          onClick={openComments}
                         >
                           Comments
                         </button>
@@ -167,11 +249,16 @@ export default function UserWishlist() {
                       </div>
                     ))}
                     <div className="article">
-                      <AddWish />
+                      <AddWish parentMethod={fetchDetailsCommentsWishes} />
                     </div>
                   </div>
                 ) : (
-                  <h2>Create your wish list</h2>
+                  <div className="create-list">
+                    <h2>Create your wish list</h2>
+                    <div className="article">
+                      <AddWish parentMethod={fetchDetailsCommentsWishes} />
+                    </div>
+                  </div>
                 )}
               </div>
             )}

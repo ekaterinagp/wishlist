@@ -34,7 +34,7 @@ const AddWish = (props) => {
       );
       console.log({ addedDataRes });
       //fetch wishes again for the user
-      // props.parentMethod();
+      props.parentMethod();
     } catch (error) {
       error.response.data.message && setError(error.response.data.message);
       console.log(error.response.data.message);

@@ -19,6 +19,10 @@ const UploadFirebase = (props) => {
     console.log(imageAsFile);
   };
 
+  function refreshPage() {
+    window.location.reload(false);
+  }
+
   const addLink = async (img) => {
     console.log(img);
     const regex = /.+?(?=&)/g;
@@ -29,6 +33,8 @@ const UploadFirebase = (props) => {
       })
       .catch((error) => console.log(error));
     console.log(res);
+    refreshPage();
+    // window.reload();
   };
 
   const handleFireBaseUpload = (e) => {

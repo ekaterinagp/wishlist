@@ -6,6 +6,23 @@
   grid-gap: 2em;
 }
 
+.delete-btn {
+  cursor: pointer;
+  float: right;
+  margin: 5px;
+}
+
+.alert {
+  display: block;
+  position: absolute;
+  width: 300px;
+  height: 200px;
+}
+
+.create-list {
+  padding: 2em;
+}
+
 .profile {
   background-color: #bbc9d6;
   height: 100%;
