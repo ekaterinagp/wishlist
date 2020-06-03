@@ -39,7 +39,7 @@ class User extends Model {
         modelClass: Follower,
         join: {
           from: "users.id",
-          to: "followers.follower_id",
+          to: "followers.follows_id",
         },
       },
     };

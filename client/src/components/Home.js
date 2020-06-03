@@ -19,13 +19,13 @@ export default function Home() {
   });
   const userID = localStorage.getItem("id");
   const [loading, setLoading] = useState(true);
+  const [follows, setFollows] = useState();
 
   const [wishes, setWishes] = useState([]);
   // const loading = userData.name == null;
 
   const fetchLists = async (e) => {
     setWishes([]);
-
     let res = await axios.get("http://localhost:9090/userswishes");
     console.log(res);
 
@@ -40,9 +40,7 @@ export default function Home() {
     const userId = localStorage.getItem("id");
     if (userId) {
       const res = await axios.get(`http://localhost:9090/user/${userId}`);
-
       console.log(res.data);
-
       if (res.data) {
         setUserData({
           name: res.data.firstName,
@@ -54,19 +52,22 @@ export default function Home() {
     }
   };
 
-  function forEachWish(one) {
-    console.log(one);
-    return (
-      <>
-        <p>{one.wish}</p>
-        <p>{one.desc}</p>
-      </>
-    );
-  }
+  const fetchFollows = async (e) => {
+    const userId = localStorage.getItem("id");
+    const res = await axios.get(`http://localhost:9090/followers/${userId}`);
+    console.log(res.data);
+    const followsArray = [];
+    res.data.forEach((one) => {
+      followsArray.push(one.follows_id);
+    });
+
+    setFollows(followsArray);
+  };
 
   useEffect(() => {
     fetchUser();
     fetchLists();
+    fetchFollows();
   }, []);
 
   return (
@@ -96,8 +97,10 @@ export default function Home() {
           <>
             <div className="articleContainer">
               {console.log(wishes)}
+              {console.log(follows)}
               {wishes
                 .filter((wish) => wish.id != userID)
+                // .filter((wish) => wish.id == follows)
                 .map(({ id, first_name, last_name, wishes }) => (
                   <div className="article-home" key={`random-${id}`}>
                     <div>
