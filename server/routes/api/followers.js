@@ -25,11 +25,20 @@ router.post("/follow", async (req, res) => {
   console.log(req.body);
   if (follower_id && user_id) {
     try {
-      const newFollowing = await Follower.query().insert({
-        user_id: user_id,
-        follower_id: follower_id,
-      });
-      return res.res.send(newFollowing);
+      const existingFollower = await Follower.query()
+        .select()
+        .where({ follows_id: follower_id })
+        .andWhere({ user_id: user_id });
+      if (existingFollower[0]) {
+        return res.send({ res: "User already followed" });
+      } else {
+        const newFollower = await Follower.query().insert({
+          user_id: user_id,
+          follows_id: follower_id,
+        });
+
+        return res.send(newFollower);
+      }
     } catch (error) {
       return res.send({ res: error.message });
     }

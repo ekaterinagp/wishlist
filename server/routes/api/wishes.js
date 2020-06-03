@@ -37,6 +37,7 @@ router.get("/list/:id", async (req, res) => {
   };
 
   let oneComment = {
+    id: null,
     text: null,
     created: null,
     firstName: null,
@@ -68,6 +69,7 @@ router.get("/list/:id", async (req, res) => {
     user.wishes.push(oneWish);
     list.comments.forEach((comment) => {
       oneComment = {
+        id: comment.id,
         text: comment.text,
         created: comment.created_at,
         firstName: comment.users.first_name,

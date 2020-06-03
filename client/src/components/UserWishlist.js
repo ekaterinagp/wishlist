@@ -29,6 +29,7 @@ export default function UserWishlist() {
   });
 
   let userId = localStorage.getItem("id");
+
   const fetchDetailsCommentsWishes = async () => {
     console.log("called from child");
     const res = await axios
@@ -106,6 +107,15 @@ export default function UserWishlist() {
 
     console.log(res);
     window.location.reload(false);
+  };
+
+  const deleteComment = async (id) => {
+    const token = localStorage.getItem("token");
+    const res = await axios
+      .delete(`http://localhost:9090/deletecomment/${id}`, token)
+      .catch((error) => console.log(error));
+    console.log(res);
+    fetchDetailsCommentsWishes();
   };
 
   const resetState = () => {
@@ -224,8 +234,9 @@ export default function UserWishlist() {
                           style={{ display: isOpen ? "block" : "none" }}
                         >
                           <div className="middle-div-comments">
+                            {console.log(comments)}
                             {comments.map(
-                              ({ text, created, firstName, lastName }) => {
+                              ({ text, created, firstName, lastName, id }) => {
                                 return (
                                   <div className="commentOne" key={text}>
                                     <p className="comment-author">
@@ -234,6 +245,14 @@ export default function UserWishlist() {
                                     <p className="comment-text">{text}</p>
 
                                     <p className="comment-time">{created}</p>
+                                    {console.log(id)}
+                                    <p
+                                      className="delete-comment"
+                                      onClick={() => deleteComment(id)}
+                                      id={id}
+                                    >
+                                      Delete comment
+                                    </p>
                                   </div>
                                 );
                               }

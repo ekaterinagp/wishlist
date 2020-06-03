@@ -35,4 +35,17 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
   }
 });
 
+//@route ti delete a comment
+router.delete("/deletecomment/:id", auth, async (req, res) => {
+  const commentId = req.params.id;
+  try {
+    const deletedcomment = await Comment.query()
+      .delete()
+      .where({ id: commentId });
+    res.json({ msg: "comment is deleted" });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
+
 module.exports = router;
