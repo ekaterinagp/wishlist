@@ -53,6 +53,7 @@ export default function Home() {
   };
 
   const fetchFollows = async (e) => {
+    setLoading(true);
     const userId = localStorage.getItem("id");
     const res = await axios.get(`http://localhost:9090/followers/${userId}`);
     console.log(res.data);
@@ -62,6 +63,8 @@ export default function Home() {
     });
 
     setFollows(followsArray);
+    setLoading(false);
+    console.log({ followsArray });
   };
 
   useEffect(() => {
@@ -91,16 +94,16 @@ export default function Home() {
             <h3>Please log in to add your list and read comments</h3>
           )}
         </div>
-        {loading ? (
+        {loading && !follows ? (
           <p className="loading">Loading...</p>
         ) : (
           <>
             <div className="articleContainer">
               {console.log(wishes)}
-              {console.log(follows)}
+              {console.log("follows", follows)}
               {wishes
                 .filter((wish) => wish.id != userID)
-                // .filter((wish) => wish.id == follows)
+                .filter((wish) => follows.includes(wish.id))
                 .map(({ id, first_name, last_name, wishes }) => (
                   <div className="article-home" key={`random-${id}`}>
                     <div>
