@@ -2,6 +2,14 @@ html,
 body {
   height: 100%;
 }
+.center {
+  text-align: center;
+  padding: 1em;
+}
+
+.blue {
+  color: blue;
+}
 
 .form-style-6 {
   font: 95% Arial, Helvetica, sans-serif;
@@ -11,7 +19,7 @@ body {
   background: #f7f7f7;
 }
 .form-style-6 h1 {
-  background: #43d1af;
+  background: #2926c9;
   padding: 20px 0;
   font-size: 140%;
   font-weight: 300;
@@ -69,8 +77,8 @@ body {
   -moz-box-sizing: border-box;
   width: 100%;
   padding: 3%;
-  background: #43d1af;
-  border-bottom: 2px solid #30c29e;
+  background: #ec7e35;
+  border-bottom: 2px solid #ec7e35;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -78,7 +86,7 @@ body {
 }
 .form-style-6 input[type="submit"]:hover,
 .form-style-6 input[type="button"]:hover {
-  background: #2ebc99;
+  background: #8d8cca;
 }
 
 .align {
@@ -90,8 +98,21 @@ body {
   text-transform: uppercase;
   text-decoration: none;
   background: #007bff;
+  padding: 6px;
+  border-radius: 0.25rem;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  margin: 1rem;
+}
+
+.example_a {
+  color: #007bff;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #fff;
   padding: 10px;
-  border-radius: 50px;
+  border-radius: 0.25rem;
   display: inline-block;
   border: none;
   transition: all 0.4s ease 0s;
@@ -209,15 +230,28 @@ body {
 }
 
 .article {
-  margin: 1rem;
+  /* width: 100%; */
+  height: fit-content;
+  float: left;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  background: #f4f4f4;
+}
 
-  border: 1px #351f1f solid;
-  padding: 1rem;
-  display: grid;
-  grid-template-rows: 1fr;
-  /* cursor: pointer; */
+.height {
+  height: 100%;
 }
 
 .description {
   font-size: 20px;
+}
+
+.uploads {
+  margin-left: 2.4rem;
+}
+
+#root {
+  height: 100%;
 }

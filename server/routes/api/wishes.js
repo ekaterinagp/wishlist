@@ -135,7 +135,7 @@ router.post("/:id/image/add", async (req, res) => {
   }
 });
 
-//@route ti upload image
+//@route to upload image to backend folder
 router.post("/upload", (req, res) => {
   if (req.files === null) {
     return res.json({ msg: "No file upload" });

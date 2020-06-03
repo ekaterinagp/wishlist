@@ -93,10 +93,21 @@ const UploadFirebase = (props) => {
   return (
     <div>
       <form onSubmit={handleFireBaseUpload}>
-        <input type="file" onChange={handleImageAsFile} />
-        <button>upload to firebase</button>
+        <input
+          type="file"
+          className="input-firebase"
+          onChange={handleImageAsFile}
+        />
+        <button className="example_b uploads">Upload</button>
       </form>
-      <img src={imageAsUrl} alt="image tag" />
+      {!imageAsUrl ? (
+        <img
+          className="wish-img"
+          src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
+        ></img>
+      ) : (
+        <img className="wish-img" src={imageAsUrl} alt="image tag" />
+      )}
     </div>
   );
 };

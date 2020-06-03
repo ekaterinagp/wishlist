@@ -43,7 +43,7 @@ export default function Header() {
   const sendMail = () => history.push("/sendMail");
   // const resetPassword = () => history.push("/resetPassword");
   const home = () => history.push("/home");
-  const wishlist = () => history.push("/wishlist");
+  // const wishlist = () => history.push("/wishlist");
 
   const logOut = () => {
     setUserData({
@@ -60,17 +60,17 @@ export default function Header() {
     <>
       <Navbar color="dark" light expand="md" dark>
         <NavbarBrand href="/">Wish list</NavbarBrand>
-        <Nav className="mr-auto" navbar>
+        <Nav className="mr-auto" className="mr-10" navbar>
           {token ? (
             <>
-              <NavLink
+              {/* <NavLink
                 to="/wishlist"
                 activeClassName="active"
                 tag={RRNavLink}
                 onClick={wishlist}
               >
                 Wish list
-              </NavLink>
+              </NavLink> */}
               <Button color="primary" onClick={logOut}>
                 Log out
               </Button>

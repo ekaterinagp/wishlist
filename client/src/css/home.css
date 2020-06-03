@@ -1,13 +1,16 @@
 .articleContainer {
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr;
-  grid-gap: 2rem;
+  grid-template-columns: 2fr 2fr 2fr 2fr;
+  grid-gap: 2em;
+  padding: 1em;
+  margin: 1em;
 }
 
 .page {
   display: grid;
-  grid-template-columns: 2fr 2fr;
+  grid-template-columns: 0.5fr 3fr;
   grid-gap: 2rem;
+  height: 100%;
 }
 
 .list-title {
@@ -17,8 +20,50 @@
 .wishOne {
   display: grid;
   grid-template-rows: 0.5fr 2fr;
+  padding: 10px;
 }
 .wish-title {
   font-weight: bold;
   color: blue;
+}
+
+.welcome {
+  background-color: #bbc9d6;
+  height: 100%;
+}
+
+.float {
+  margin-left: 5em;
+}
+
+ul.mr-auto navbar-nav {
+  margin-left: 80% !important;
+}
+
+.article-home {
+  display: grid;
+  grid-template-rows: 2fr 2fr 2fr;
+  max-height: 20em;
+  /* height: fit-content; */
+  float: left;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  background: #f4f4f4;
+}
+
+.wishes-middle {
+  height: 120px;
+}
+
+.no-wishes {
+  padding: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.button-read {
+  display: grid;
+  justify-self: center;
 }

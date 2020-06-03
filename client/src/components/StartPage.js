@@ -41,7 +41,10 @@ export default function StartPage() {
           </BrowserRouter>
         </div>
       </div>
-      <div className="advice-part">{advice}</div>
+      <div className="advice-part">
+        <h3>Advice of the day</h3>
+        <h2>{advice}</h2>
+      </div>
     </div>
   );
 }
