@@ -19,7 +19,7 @@ class User extends Model {
           to: "wishes.user_id",
         },
       },
-      wishes: {
+      details: {
         relation: Model.BelongsToOneRelation,
         modelClass: Details,
         join: {

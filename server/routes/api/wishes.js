@@ -82,7 +82,7 @@ router.get("/list/:id", async (req, res) => {
   return res.send(user);
 });
 
-//@route POST wish
+//@route Add wish
 router.post("/:id/wish/add", async (req, res) => {
   const id = req.params.id;
 

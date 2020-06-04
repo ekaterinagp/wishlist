@@ -8,10 +8,17 @@ const jwSecret = config.get("jwtSecret");
 const User = require("../../models/User");
 const Comment = require("../../models/Comment");
 const Wish = require("../../models/Wish");
+const Details = require("../../models/Details");
 
 //@route GET all users
 router.get("/users", async (req, res) => {
   const users = await User.query().select();
+  return res.send(users);
+});
+
+//@route GET all users with details
+router.get("/details", async (req, res) => {
+  const users = await User.query().withGraphFetched("details");
   return res.send(users);
 });
 
@@ -222,6 +229,33 @@ router.post("/change-password/:id", async (req, res) => {
     }
   } catch (error) {
     res.json({ error: error.message });
+  }
+});
+
+//@route add details
+router.post("/:id/details/add", async (req, res) => {
+  const userId = req.params.id;
+
+  const { size, color, shop } = req.body;
+  console.log(req.body);
+  if (size || color || shop) {
+    console.log("something is here");
+
+    try {
+      console.log("we are in a try");
+      const newDetails = await Details.query().insert({
+        user_id: userId,
+        size: size,
+        color: color,
+        shop: shop,
+      });
+      console.log(newDetails);
+      return res.send(newDetails);
+    } catch (error) {
+      return res.send({ response: error.message });
+    }
+  } else {
+    return res.send({ response: "All empty fields" });
   }
 });
 
