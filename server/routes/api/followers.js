@@ -13,10 +13,24 @@ router.get("/followers", async (req, res) => {
 //@route GET a user and who user follows
 router.get("/followers/:id", async (req, res) => {
   const userID = req.params.id;
+  const followers = {
+    follows: [],
+    followers: [],
+  };
+
   const following = await Follower.query()
     .where("user_id", userID)
     .withGraphFetched("users");
-  return res.send(following);
+  following.forEach((one) => {
+    followers.follows.push(one.follows_id);
+  });
+  const following1 = await Follower.query()
+    .where("follows_id", userID)
+    .withGraphFetched("users");
+  following1.forEach((one) => {
+    followers.followers.push(one.user_id);
+  });
+  return res.send(followers);
 });
 
 //@route POST add a user to follow

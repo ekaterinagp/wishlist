@@ -18,6 +18,7 @@ export default function UserWishlist() {
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notAuth, setNotAuth] = useState(false);
+  const [followers, setFollowers] = useState({});
   const [notification, setNotification] = useState({
     msg: "",
     id: "",
@@ -79,23 +80,15 @@ export default function UserWishlist() {
     setLoading(false);
   };
 
-  // const showComments = (e) => {
-  //   const currentOpenState = isOpen;
-  //   console.log(e.target.id);
-  //   const clickedLink = e.target.value;
-  //   // currentOpenState[clickedLink].value = !currentOpenState[clickedLink].value;
-  //   setIsOpen(clickedLink);
-  //   // setShowText(!showText);
-  // };
-
-  // const handleClick = (e) => {
-  //   console.log(e.target.id);
-  //   const currentOpenState = isOpen;
-  //   const clickedLink = e.target.id; // use your own identifier
-  //   currentOpenState[clickedLink].value = !currentOpenState[clickedLink].value;
-  //   console.log(currentOpenState[clickedLink].value);
-  //   setIsOpen(currentOpenState);
-  // };
+  const fetchFollowers = async () => {
+    setLoading(true);
+    const res = await axios
+      .get(`http://localhost:9090/followers/${userId}`)
+      .catch((error) => console.log(error));
+    console.log(res.data);
+    setFollowers(res.data);
+    setLoading(false);
+  };
 
   const confirmDelete = (e) => {
     resetState();
@@ -152,6 +145,7 @@ export default function UserWishlist() {
   useEffect(() => {
     if (localStorage.getItem("id")) {
       fetchUserDetails();
+      fetchFollowers();
     } else {
       setNotAuth(true);
     }
@@ -191,16 +185,36 @@ export default function UserWishlist() {
                         Reset password
                       </Link>
                       <div className="user-data">
+                        {followers != {} ? (
+                          <>
+                            <div className="followers">
+                              <p>Following </p>
+                              <p className="follow-number">
+                                {followers.follows.length}
+                              </p>
+                            </div>
+                            <div className="followers">
+                              <p>Followers </p>
+                              <p className="follow-number">
+                                {followers.followers.length}
+                              </p>
+                            </div>{" "}
+                          </>
+                        ) : (
+                          <>
+                            <div className="followers">
+                              <p>Following </p>
+                              <p className="follow-number">0</p>
+                            </div>
+                            <div className="followers">
+                              <p>Followers </p>
+                              <p className="follow-number">0</p>
+                            </div>{" "}
+                          </>
+                        )}
+
                         <div className="followers">
-                          <p>Following </p>
-                          <p className="follow-number">3</p>
-                        </div>{" "}
-                        <div className="followers">
-                          <p>Followers </p>
-                          <p className="follow-number">3</p>
-                        </div>{" "}
-                        <div className="followers">
-                          <p>Items </p>
+                          <p>Wishes </p>
                           <p className="follow-number">
                             {!wishlist ? "0" : wishlist.length}
                           </p>
