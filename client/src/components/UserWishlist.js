@@ -18,7 +18,8 @@ export default function UserWishlist() {
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notAuth, setNotAuth] = useState(false);
-  const [followers, setFollowers] = useState({});
+  const [followers, setFollowers] = useState("");
+  const [details, setDetails] = useState("");
   const [notification, setNotification] = useState({
     msg: "",
     id: "",
@@ -90,6 +91,16 @@ export default function UserWishlist() {
     setLoading(false);
   };
 
+  const fetchDetails = async () => {
+    setLoading(true);
+    const res = await axios
+      .get(`http://localhost:9090/details/${userId}`)
+      .catch((error) => console.log(error));
+    console.log(res.data);
+    setDetails(res.data);
+    setLoading(false);
+  };
+
   const confirmDelete = (e) => {
     resetState();
     const id = e.target.id;
@@ -146,6 +157,7 @@ export default function UserWishlist() {
     if (localStorage.getItem("id")) {
       fetchUserDetails();
       fetchFollowers();
+      fetchDetails();
     } else {
       setNotAuth(true);
     }
@@ -185,7 +197,7 @@ export default function UserWishlist() {
                         Reset password
                       </Link>
                       <div className="user-data">
-                        {followers != {} ? (
+                        {followers != "" ? (
                           <>
                             <div className="followers">
                               <p>Following </p>
@@ -217,6 +229,26 @@ export default function UserWishlist() {
                           <p>Wishes </p>
                           <p className="follow-number">
                             {!wishlist ? "0" : wishlist.length}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="user-data">
+                        <div className="followers">
+                          <p>Size</p>{" "}
+                          <p className="follow-number">
+                            {details.size ? details.size : null}
+                          </p>
+                        </div>
+                        <div className="followers">
+                          <p>Color</p>{" "}
+                          <p className="follow-number">
+                            {details.color ? details.color : null}
+                          </p>
+                        </div>
+                        <div className="followers">
+                          <p>Shop</p>{" "}
+                          <p className="follow-number">
+                            {details.shop ? details.shop : null}
                           </p>
                         </div>
                       </div>

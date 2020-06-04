@@ -22,6 +22,26 @@ router.get("/details", async (req, res) => {
   return res.send(users);
 });
 
+//@route GET a users with details
+//REMOVE IDS!
+router.get("/details/:id", async (req, res) => {
+  const id = req.params.id;
+  let userDetails = {
+    size: null,
+    shop: null,
+    color: null,
+  };
+  const users = await User.query().where("id", id).withGraphFetched("details");
+
+  userDetails = {
+    size: users[0].details.size,
+    shop: users[0].details.shop,
+    color: users[0].details.color,
+  };
+
+  return res.send(userDetails);
+});
+
 //@route all users and all wishes
 router.get("/userswishes", async (req, res) => {
   const users = await User.query().withGraphFetched("wishes");
