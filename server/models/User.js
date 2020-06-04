@@ -2,6 +2,7 @@ const { Model } = require("objection");
 const Wish = require("./Wish");
 const Comment = require("./Comment");
 const Follower = require("./Follower");
+const Details = require("./Details");
 
 class User extends Model {
   static get tableName() {
@@ -16,6 +17,14 @@ class User extends Model {
         join: {
           from: "users.id",
           to: "wishes.user_id",
+        },
+      },
+      wishes: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Details,
+        join: {
+          from: "users.id",
+          to: "details.user_id",
         },
       },
       comments: {
