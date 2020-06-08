@@ -121,7 +121,7 @@ router.post("/:id/wish/add", async (req, res) => {
       }
     }
   } else {
-    return res.send({ response: "Fields are not filled correctly" });
+    return res.send({ res: "All fields must be filled" });
   }
 });
 

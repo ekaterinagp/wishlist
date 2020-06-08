@@ -42,6 +42,13 @@
   color: blue;
 }
 
+.not-follow {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+  padding: 1em;
+}
+
 .welcome {
   background-color: #bbc9d6;
   height: 100%;

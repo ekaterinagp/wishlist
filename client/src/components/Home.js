@@ -111,7 +111,7 @@ export default function Home() {
               </h2>
 
               <button className="example_b float" onClick={profile}>
-                Your wish list
+                My wish list
               </button>
 
               {/* <AddList parentMethod={fetchLists} /> */}
@@ -127,7 +127,9 @@ export default function Home() {
             <div className="wrapper">
               <div className="top-wrapper">
                 <h2 className="title-friends">Friends</h2>
-                {!follows ? <p>You do not follow any lists yet</p> : null}
+                {follows == "" ? (
+                  <p className="not-follow">You do not follow any lists yet</p>
+                ) : null}
                 <div className="articleContainer">
                   {console.log(wishes)}
                   {console.log("follows", follows)}

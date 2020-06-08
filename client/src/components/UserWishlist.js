@@ -10,8 +10,10 @@ import AddWish from "./AddWish";
 import Notification from "./Notification";
 import UpdateUser from "./UpdateUser";
 import UpdateDetails from "./UpdateDetails";
+import Error from "./Error";
 
 export default function UserWishlist() {
+  const [error, setError] = useState("");
   const history = useHistory();
   const [showText, setShowText] = useState(false);
   const [currentOpenState, setCurrentOpenState] = useState();
@@ -37,116 +39,151 @@ export default function UserWishlist() {
   let userId = localStorage.getItem("id");
 
   const fetchDetailsCommentsWishes = async () => {
-    setInit(false);
-    console.log("called from child");
-    const res = await axios
-      .get(`http://localhost:9090/list/${userId}`)
-      .catch((error) => console.log(error));
+    try {
+      setInit(false);
+      console.log("called from child");
+      const res = await axios
+        .get(`http://localhost:9090/list/${userId}`)
+        .catch((error) => console.log(error));
 
-    console.log(res.data);
+      console.log(res.data);
 
-    if (res.data.wishes) {
-      if (init) {
-        res.data.wishes.forEach((one) => {
-          one.commentsAreOpen = false;
-        });
-      } else {
-        wishlist.forEach((wish) => {
-          let found = res.data.wishes.find((one) => one.id === wish.id);
-          found.commentsAreOpen = wish.commentsAreOpen;
-        });
-      }
-      console.log("look here!!!", res.data.wishes);
-      res.data.wishes.forEach((one) => {
-        if (one.comments.length) {
-          one.comments.reverse();
+      if (res.data.wishes) {
+        if (init) {
+          res.data.wishes.forEach((one) => {
+            one.commentsAreOpen = false;
+          });
+        } else {
+          wishlist.forEach((wish) => {
+            let found = res.data.wishes.find((one) => one.id === wish.id);
+            found.commentsAreOpen = wish.commentsAreOpen;
+          });
         }
-      });
-      console.log("what about now?", res.data.wishes);
+        console.log("look here!!!", res.data.wishes);
+        res.data.wishes.forEach((one) => {
+          if (one.comments.length) {
+            one.comments.reverse();
+          }
+        });
+        console.log("what about now?", res.data.wishes);
 
-      setWishList(res.data.wishes);
+        setWishList(res.data.wishes);
+      }
+      setUserData({
+        name: res.data.name,
+        lastName: res.data.lastName,
+        email: res.data.email,
+      });
+      setInit(false);
+      setLoading(false);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
     }
-    setUserData({
-      name: res.data.name,
-      lastName: res.data.lastName,
-      email: res.data.email,
-    });
-    setInit(false);
-    setLoading(false);
   };
 
   const fetchUserDetails = async () => {
-    const res = await axios
-      .get(`http://localhost:9090/user/${userId}`)
-      .catch((error) => console.log(error));
+    try {
+      const res = await axios
+        .get(`http://localhost:9090/user/${userId}`)
+        .catch((error) => console.log(error));
 
-    console.log(res.data);
+      console.log(res.data);
 
-    setUserData({
-      name: res.data.firstName,
-      lastName: res.data.lastName,
-      email: res.data.email,
-    });
+      setUserData({
+        name: res.data.firstName,
+        lastName: res.data.lastName,
+        email: res.data.email,
+      });
 
-    setLoading(false);
+      setLoading(false);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const fetchFollowers = async () => {
-    setLoading(true);
-    const res = await axios
-      .get(`http://localhost:9090/followers/${userId}`)
-      .catch((error) => console.log(error));
-    console.log(res.data);
-    setFollowers(res.data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const res = await axios
+        .get(`http://localhost:9090/followers/${userId}`)
+        .catch((error) => console.log(error));
+      console.log(res.data);
+      setFollowers(res.data);
+      setLoading(false);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const fetchDetails = async () => {
-    setLoading(true);
-    const res = await axios
-      .get(`http://localhost:9090/details/${userId}`)
-      .catch((error) => console.log(error));
-    console.log(res.data);
-    if (res.data) {
-      setDetails(res.data);
-    }
+    try {
+      setLoading(true);
+      const res = await axios
+        .get(`http://localhost:9090/details/${userId}`)
+        .catch((error) => console.log(error));
+      console.log(res.data);
+      if (res.data) {
+        setDetails(res.data);
+      }
 
-    setLoading(false);
+      setLoading(false);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const confirmDelete = (e) => {
-    resetState();
-    const id = e.target.id;
-    console.log(id);
-    setNotification({
-      msg: "Are you sure you want to delete this wish?",
-      id: id,
-    });
-    console.log(notification);
+    e.preventDefault();
+    try {
+      resetState();
+      const id = e.target.id;
+      console.log(id);
+      setNotification({
+        msg: "Are you sure you want to delete this wish?",
+        id: id,
+      });
+      console.log(notification);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const deleteWish = async (id) => {
-    const token = localStorage.getItem("token");
-    const res = await axios
-      .delete(`http://localhost:9090/deletewish/${id}`, token)
-      .catch((error) => console.log(error));
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios
+        .delete(`http://localhost:9090/deletewish/${id}`, token)
+        .catch((error) => console.log(error));
 
-    console.log(res);
-    resetState();
-    const res1 = await axios
-      .get(`http://localhost:9090/list/${userId}`)
-      .catch((error) => console.log(error));
-    setWishList(res1.data.wishes);
-    // window.location.reload(false);
+      console.log(res);
+      resetState();
+      const updatedWishes = await axios
+        .get(`http://localhost:9090/list/${userId}`)
+        .catch((error) => console.log(error));
+      setWishList(updatedWishes.data.wishes);
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const deleteComment = async (id) => {
-    const token = localStorage.getItem("token");
-    const res = await axios
-      .delete(`http://localhost:9090/deletecomment/${id}`, token)
-      .catch((error) => console.log(error));
-    console.log(res);
-    fetchDetailsCommentsWishes();
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios
+        .delete(`http://localhost:9090/deletecomment/${id}`, token)
+        .catch((error) => console.log(error));
+      console.log(res);
+      fetchDetailsCommentsWishes();
+    } catch (error) {
+      error.response.data.message && setError(error.response.data.message);
+      console.log(error.response.data.message);
+    }
   };
 
   const resetState = () => {
@@ -154,7 +191,6 @@ export default function UserWishlist() {
       msg: "",
       id: "",
     });
-    // window.location.reload(false);
   };
 
   const toggleComments = (id) => {

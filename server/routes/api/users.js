@@ -23,7 +23,7 @@ router.get("/details", async (req, res) => {
 });
 
 //@route GET a users with details
-//REMOVE IDS!
+
 router.get("/details/:id", async (req, res) => {
   const id = req.params.id;
   let userDetails = {
@@ -32,14 +32,17 @@ router.get("/details/:id", async (req, res) => {
     color: null,
   };
   const users = await User.query().where("id", id).withGraphFetched("details");
-
-  userDetails = {
-    size: users[0].details.size,
-    shop: users[0].details.shop,
-    color: users[0].details.color,
-  };
-
-  return res.send(userDetails);
+  console.log(users);
+  if (users.details) {
+    userDetails = {
+      size: users[0].details.size,
+      shop: users[0].details.shop,
+      color: users[0].details.color,
+    };
+    return res.send(userDetails);
+  } else {
+    return res.send({ res: "No details yet" });
+  }
 });
 
 //@route all users and all wishes

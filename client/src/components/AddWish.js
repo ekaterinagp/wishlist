@@ -33,11 +33,15 @@ const AddWish = (props) => {
         enteredData
       );
       console.log({ addedDataRes });
-      //fetch wishes again for the user
-      props.parentMethod();
+      if (addedDataRes.data.res) {
+        console.log(addedDataRes.data.res);
+        setError(addedDataRes.data.res);
+      }
+      // props.parentMethod();
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      // error.addedDataRes.data.response &&
+      //   setError(error.addedDataRes.data.response);
+      console.log("here should go", error.addedDataRes.data.response);
     }
   };
 
