@@ -9,12 +9,14 @@ import ResetPassword from "./ResetPassword";
 import AddWish from "./AddWish";
 import Notification from "./Notification";
 import UpdateUser from "./UpdateUser";
+import UpdateDetails from "./UpdateDetails";
 
 export default function UserWishlist() {
   const history = useHistory();
   const [showText, setShowText] = useState(false);
   const [currentOpenState, setCurrentOpenState] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDetails, setIsOpenDetails] = useState(false);
   const resetPassword = () => history.push("/resetPassword");
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -158,6 +160,10 @@ export default function UserWishlist() {
     setIsOpen(!isOpen);
   };
 
+  const toggleUpdateDetails = () => {
+    setIsOpenDetails(!isOpenDetails);
+  };
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       fetchUserDetails();
@@ -198,21 +204,19 @@ export default function UserWishlist() {
                       </h2>
                       <h3>{userData.email}</h3>
 
-                      <Link to="/resetPassword" onClick={resetPassword}>
-                        Reset password
-                      </Link>
                       <div className="user-button-update">
                         {" "}
                         <button
                           className="example_b toggle"
                           onClick={toggleUpdate}
                         >
-                          Update user settings
+                          Update settings
                         </button>
                         {isOpen ? (
                           <UpdateUser
                             userData={userData}
                             fetchHandler={fetchUserDetails}
+                            open={setIsOpen}
                           />
                         ) : null}
                       </div>
@@ -236,6 +240,21 @@ export default function UserWishlist() {
                             {details.shop ? details.shop : null}
                           </p>
                         </div>
+                      </div>
+                      <div className="user-button-update">
+                        <button
+                          className="example_b toggle"
+                          onClick={toggleUpdateDetails}
+                        >
+                          Update preferences
+                        </button>
+                        {isOpenDetails ? (
+                          <UpdateDetails
+                            userData={details}
+                            fetchHandler={fetchDetails}
+                            open={setIsOpenDetails}
+                          />
+                        ) : null}
                       </div>
                       <div className="user-data">
                         {followers != "" ? (
@@ -273,6 +292,9 @@ export default function UserWishlist() {
                           </p>
                         </div>
                       </div>
+                      <Link to="/resetPassword" onClick={resetPassword}>
+                        Reset password
+                      </Link>
                     </div>
                   ) : (
                     <p> Please log in </p>

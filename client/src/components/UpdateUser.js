@@ -42,6 +42,7 @@ const UpdateUser = (props) => {
       console.log(updateUserData);
       history.push("/wishlist");
       props.fetchHandler();
+      props.open(false);
     } catch (error) {
       error.response.data.message && setError(error.response.data.message);
       console.log(error.response.data.message);

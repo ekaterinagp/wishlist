@@ -53,7 +53,7 @@ export default function Header() {
     localStorage.setItem("auth-token", "");
     localStorage.setItem("id", "");
     // window.location.reload();
-    history.push("/");
+    history.push("/startpage");
   };
 
   return (
