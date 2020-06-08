@@ -8,6 +8,7 @@ import UploadFirebase from "./UploadFirebase";
 import ResetPassword from "./ResetPassword";
 import AddWish from "./AddWish";
 import Notification from "./Notification";
+import UpdateUser from "./UpdateUser";
 
 export default function UserWishlist() {
   const history = useHistory();
@@ -153,6 +154,10 @@ export default function UserWishlist() {
     // setIsOpen(!isOpen);
   };
 
+  const toggleUpdate = () => {
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       fetchUserDetails();
@@ -196,6 +201,42 @@ export default function UserWishlist() {
                       <Link to="/resetPassword" onClick={resetPassword}>
                         Reset password
                       </Link>
+                      <div className="user-button-update">
+                        {" "}
+                        <button
+                          className="example_b toggle"
+                          onClick={toggleUpdate}
+                        >
+                          Update user settings
+                        </button>
+                        {isOpen ? (
+                          <UpdateUser
+                            userData={userData}
+                            fetchHandler={fetchUserDetails}
+                          />
+                        ) : null}
+                      </div>
+
+                      <div className="user-data">
+                        <div className="followers">
+                          <p>Size</p>{" "}
+                          <p className="follow-number">
+                            {details.size ? details.size : null}
+                          </p>
+                        </div>
+                        <div className="followers">
+                          <p>Color</p>{" "}
+                          <p className="follow-number">
+                            {details.color ? details.color : null}
+                          </p>
+                        </div>
+                        <div className="followers">
+                          <p>Shop</p>{" "}
+                          <p className="follow-number">
+                            {details.shop ? details.shop : null}
+                          </p>
+                        </div>
+                      </div>
                       <div className="user-data">
                         {followers != "" ? (
                           <>
@@ -229,26 +270,6 @@ export default function UserWishlist() {
                           <p>Wishes </p>
                           <p className="follow-number">
                             {!wishlist ? "0" : wishlist.length}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="user-data">
-                        <div className="followers">
-                          <p>Size</p>{" "}
-                          <p className="follow-number">
-                            {details.size ? details.size : null}
-                          </p>
-                        </div>
-                        <div className="followers">
-                          <p>Color</p>{" "}
-                          <p className="follow-number">
-                            {details.color ? details.color : null}
-                          </p>
-                        </div>
-                        <div className="followers">
-                          <p>Shop</p>{" "}
-                          <p className="follow-number">
-                            {details.shop ? details.shop : null}
                           </p>
                         </div>
                       </div>

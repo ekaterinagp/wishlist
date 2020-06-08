@@ -6,6 +6,21 @@
   grid-gap: 2em;
 }
 
+.form_update {
+  font: 95% Arial, Helvetica, sans-serif;
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 16px;
+}
+
+#update_form.form-style-6 {
+  background-color: #bbc9d6 !important;
+}
+
+.user-button-update {
+  font-size: inherit;
+}
+
 .delete-btn {
   cursor: pointer;
   float: right;
@@ -43,7 +58,7 @@
 }
 
 .user-data {
-  padding-top: 2em;
+  padding-top: 3em;
   font-size: 25px;
 }
 .middle-div-comments {
