@@ -19,6 +19,7 @@ export default function List({ match }) {
   });
   const [loading, setLoading] = useState(true);
   const [notAuth, setNotAuth] = useState(false);
+  const [init, setInit] = useState(true);
 
   const fetchDetailsCommentsWishes = async () => {
     const res = await axios.get(`http://localhost:9090/list/${params.listId}`);
@@ -26,6 +27,16 @@ export default function List({ match }) {
     console.log(res);
 
     if (res.data.wishes) {
+      if (init) {
+        res.data.wishes.forEach((one) => {
+          one.commentsAreOpen = false;
+        });
+      } else {
+        wishlist.forEach((wish) => {
+          let found = res.data.wishes.find((one) => one.id === wish.id);
+          found.commentsAreOpen = wish.commentsAreOpen;
+        });
+      }
       setWishList(res.data.wishes);
     }
     setUserData({
@@ -33,11 +44,21 @@ export default function List({ match }) {
       lastName: res.data.lastName,
       email: res.data.email,
     });
-
+    setInit(false);
     setLoading(false);
   };
-  const toggle = () => {
-    setIsOpen(!isOpen);
+  const toggleComments = (id) => {
+    console.log("opencomments", id);
+    console.log(wishlist);
+    wishlist.forEach((one) => {
+      if (one.id === id) {
+        console.log(one);
+        one.commentsAreOpen = !one.commentsAreOpen;
+      }
+    });
+
+    setWishList([...wishlist]);
+    // setIsOpen(!isOpen);
   };
   useEffect(() => {
     if (localStorage.getItem("id")) {
@@ -79,64 +100,77 @@ export default function List({ match }) {
                   {wishlist.length ? (
                     <div className="user-wishes">
                       {console.log(wishlist)}
-                      {wishlist.map(({ id, wish, desc, comments, imgURL }) => (
-                        <div className="article" key={`random-${desc}`}>
-                          <div className="top-div-wish">
-                            <h2 className="list-title">{wish}</h2>
-                            <p className="description">{desc}</p>
-                            <div id={id}>
-                              {!imgURL ? (
-                                <img
-                                  className="wish-img"
-                                  src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
-                                ></img>
-                              ) : (
-                                <img
-                                  className="wish-img"
-                                  src={imgURL}
-                                  alt="image tag"
+                      {wishlist.map(
+                        ({
+                          id,
+                          wish,
+                          desc,
+                          comments,
+                          imgURL,
+                          commentsAreOpen,
+                        }) => (
+                          <div className="article" key={`random-${desc}`}>
+                            <div className="top-div-wish">
+                              <h2 className="list-title">{wish}</h2>
+                              <p className="description">{desc}</p>
+                              <div id={id}>
+                                {!imgURL ? (
+                                  <img
+                                    className="wish-img"
+                                    src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
+                                  ></img>
+                                ) : (
+                                  <img
+                                    className="wish-img"
+                                    src={imgURL}
+                                    alt="image tag"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <button
+                              id={id}
+                              className="example_b toggle"
+                              onClick={() => toggleComments(id)}
+                            >
+                              Comments
+                            </button>
+
+                            <div
+                              className="containerToggle"
+                              id={id}
+                              style={{
+                                display: commentsAreOpen ? "block" : "none",
+                              }}
+                            >
+                              <div className="middle-div-comments">
+                                {comments.map(
+                                  ({ text, created, firstName, lastName }) => {
+                                    return (
+                                      <div className="commentOne" key={text}>
+                                        <p className="comment-author">
+                                          {firstName} {lastName}
+                                        </p>
+                                        <p className="comment-text">{text}</p>
+
+                                        <p className="comment-time">
+                                          {created}
+                                        </p>
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                              <div className="bottom-div-add-comment">
+                                <AddComment
+                                  listId={id}
+                                  parentMethod={fetchDetailsCommentsWishes}
                                 />
-                              )}
+                              </div>
                             </div>
                           </div>
-                          <button
-                            id={id}
-                            className="example_b toggle"
-                            onClick={toggle}
-                          >
-                            Comments
-                          </button>
-
-                          <div
-                            className="containerToggle"
-                            id={id}
-                            style={{ display: isOpen ? "block" : "none" }}
-                          >
-                            <div className="middle-div-comments">
-                              {comments.map(
-                                ({ text, created, firstName, lastName }) => {
-                                  return (
-                                    <div className="commentOne" key={text}>
-                                      <p className="comment-author">
-                                        {firstName} {lastName}
-                                      </p>
-                                      <p className="comment-text">{text}</p>
-
-                                      <p className="comment-time">{created}</p>
-                                    </div>
-                                  );
-                                }
-                              )}
-                            </div>
-                            <div className="bottom-div-add-comment">
-                              <AddComment
-                                listId={id}
-                                parentMethod={fetchDetailsCommentsWishes}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   ) : (
                     <h2 className="no-wish">
