@@ -135,15 +135,20 @@ body {
   transition: all 0.4s ease 0s;
 }
 
-.welcome {
-  width: 300px;
-}
-
 .list-div {
   background-color: rgb(38, 153, 153);
   margin: 2rem;
   color: white;
   max-width: 800px;
+}
+
+.card-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-1:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .p-center {
@@ -259,4 +264,14 @@ body {
 
 #root {
   height: 100%;
+}
+
+.masonry {
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr;
+}
+
+.masonry-brick {
+  width: 100%;
+  min-height: 300px;
 }

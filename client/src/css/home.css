@@ -6,10 +6,14 @@
   margin: 1em;
 }
 
+.title-friends {
+  padding: 1em;
+}
+
 .page {
   display: grid;
   grid-template-columns: 0.5fr 3fr;
-  grid-gap: 2rem;
+
   height: 100%;
 }
 
@@ -73,6 +77,10 @@ ul.mr-auto navbar-nav {
   display: grid;
   justify-self: center;
   margin-bottom: 10px;
+}
+
+.bottom-wrapper {
+  background-color: #d8d5d5;
 }
 
 .no-wishes {

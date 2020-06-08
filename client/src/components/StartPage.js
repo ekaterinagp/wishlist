@@ -9,18 +9,17 @@ export default function StartPage() {
   const register = () => history.push("/register");
   const [advice, setAdvice] = useState();
   const [loading, setLoading] = useState(true);
-  const abortController = new AbortController();
-  const getAdvice = async () => {
-    const res = await axios.get("https://api.adviceslip.com/advice", {
-      signal: abortController.signal,
-    });
-    console.log(res.data.slip.advice);
-    setAdvice(res.data.slip.advice);
-    setLoading(false);
-  };
 
   useEffect(() => {
-    getAdvice();
+    const abortController = new AbortController();
+    const getAdvice = async () => {
+      const res = await axios.get("https://api.adviceslip.com/advice", {
+        signal: abortController.signal,
+      });
+      console.log(res.data.slip.advice);
+      setAdvice(res.data.slip.advice);
+      setLoading(false);
+    };
     const interval = setInterval(() => {
       getAdvice();
     }, 10000);
@@ -29,13 +28,7 @@ export default function StartPage() {
       clearInterval(interval);
       abortController.abort();
     };
-  }, []);
-
-  // useEffect(() => {
-  //   getAdvice();
-
-  //   return () => clearInterval(interval);
-  // }, []);
+  }, ["https://api.adviceslip.com/advice"]);
 
   return (
     <div className="start-container">

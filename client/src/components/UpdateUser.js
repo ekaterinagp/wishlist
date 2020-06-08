@@ -79,7 +79,7 @@ const UpdateUser = (props) => {
             onChange={handelChange}
           />
 
-          <button className="example_b reset">Update settings</button>
+          <button className="example_b reset">Save settings</button>
         </form>
       </div>
     </>

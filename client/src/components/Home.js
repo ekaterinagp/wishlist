@@ -126,7 +126,7 @@ export default function Home() {
           <>
             <div className="wrapper">
               <div className="top-wrapper">
-                <h2>You follow</h2>
+                <h2 className="title-friends">Friends</h2>
                 {!follows ? <p>You do not follow any lists yet</p> : null}
                 <div className="articleContainer">
                   {console.log(wishes)}
@@ -137,7 +137,7 @@ export default function Home() {
                       follows ? follows.includes(wish.id) : null
                     )
                     .map(({ id, first_name, last_name, wishes }) => (
-                      <div className="article-home" key={`random-${id}`}>
+                      <div className="article-home card-1" key={`random-${id}`}>
                         <div>
                           <h2 className="list-title">
                             {first_name} {last_name}
@@ -177,7 +177,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="bottom-wrapper">
-                <h2>Add friends</h2>
+                <h2 className="title-friends">Add friends</h2>
                 <div className="articleContainer">
                   {console.log(wishes)}
                   {console.log("follows", follows)}

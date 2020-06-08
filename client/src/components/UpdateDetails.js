@@ -82,7 +82,7 @@ const UpdateDetails = (props) => {
             onChange={handelChange}
           />
 
-          <button className="example_b reset">Update preferences</button>
+          <button className="example_b reset">Save preferences</button>
         </form>
       </div>
     </>

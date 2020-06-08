@@ -49,7 +49,7 @@ export default function List({ match }) {
   };
   const toggleComments = (id) => {
     console.log("opencomments", id);
-    console.log(wishlist);
+
     wishlist.forEach((one) => {
       if (one.id === id) {
         console.log(one);
@@ -58,7 +58,6 @@ export default function List({ match }) {
     });
 
     setWishList([...wishlist]);
-    // setIsOpen(!isOpen);
   };
   useEffect(() => {
     if (localStorage.getItem("id")) {
@@ -109,7 +108,10 @@ export default function List({ match }) {
                           imgURL,
                           commentsAreOpen,
                         }) => (
-                          <div className="article" key={`random-${desc}`}>
+                          <div
+                            className="article card-1"
+                            key={`random-${desc}`}
+                          >
                             <div className="top-div-wish">
                               <h2 className="list-title">{wish}</h2>
                               <p className="description">{desc}</p>

@@ -56,6 +56,13 @@ export default function UserWishlist() {
           found.commentsAreOpen = wish.commentsAreOpen;
         });
       }
+      console.log("look here!!!", res.data.wishes);
+      res.data.wishes.forEach((one) => {
+        if (one.comments.length) {
+          one.comments.reverse();
+        }
+      });
+      console.log("what about now?", res.data.wishes);
 
       setWishList(res.data.wishes);
     }
@@ -312,7 +319,7 @@ export default function UserWishlist() {
                   />
                 ) : null}
                 {wishlist.length ? (
-                  <div className="user-wishes">
+                  <div className="user-wishes masonry">
                     {wishlist.map(
                       ({
                         id,
@@ -322,7 +329,10 @@ export default function UserWishlist() {
                         imgURL,
                         commentsAreOpen,
                       }) => (
-                        <div className="article" key={`random-${desc}`}>
+                        <div
+                          className="article card-1 masonry-brick"
+                          key={`random-${desc}`}
+                        >
                           <div className="top-div-wish">
                             {" "}
                             <p
@@ -349,7 +359,7 @@ export default function UserWishlist() {
                           >
                             Comments
                           </button>
-                          {console.log("comments are open?", commentsAreOpen)}
+
                           <div
                             className="containerToggle"
                             id={id}

@@ -56,8 +56,7 @@ export default function App() {
           <Route path="/login" component={Login} />
           <Route path="/wishlist" component={UserWishlist} />
           <Route exact path="/list/:listId" component={SingleWishList} />
-          {/* <Route path="/sendMail" component={} /> */}
-          {/* <Route exact path="/list/:listId" component={} /> */}
+
           <Route path="/resetPassword" component={ResetPassword} />
         </Switch>
       </BrowserRouter>

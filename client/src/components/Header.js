@@ -40,7 +40,7 @@ export default function Header() {
   const register = () => history.push("/register");
   const profile = () => history.push("/profile");
   const login = () => history.push("/login");
-  const sendMail = () => history.push("/sendMail");
+
   // const resetPassword = () => history.push("/resetPassword");
   const home = () => history.push("/home");
   // const wishlist = () => history.push("/wishlist");
@@ -110,17 +110,6 @@ export default function Header() {
               <NavItem></NavItem>
             </>
           )}
-
-          <NavItem>
-            <NavLink
-              tag={RRNavLink}
-              activeClassName="ctive"
-              to="/sendMail"
-              onClick={sendMail}
-            >
-              Send Email
-            </NavLink>
-          </NavItem>
         </Nav>
       </Navbar>
     </>
