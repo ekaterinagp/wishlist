@@ -28,20 +28,17 @@ const AddWish = (props) => {
         desc,
       };
 
-      const addedDataRes = await axios.post(
-        `http://localhost:9090/${id}/wish/add`,
-        enteredData
-      );
+      const addedDataRes = await axios
+        .post(`http://localhost:9090/${id}/wish/add`, enteredData)
+        .catch((error) => console.log(error));
       console.log({ addedDataRes });
       if (addedDataRes.data.res) {
         console.log(addedDataRes.data.res);
         setError(addedDataRes.data.res);
       }
-      // props.parentMethod();
+      props.parentMethod();
     } catch (error) {
-      // error.addedDataRes.data.response &&
-      //   setError(error.addedDataRes.data.response);
-      console.log("here should go", error.addedDataRes.data.response);
+      console.log(error);
     }
   };
 

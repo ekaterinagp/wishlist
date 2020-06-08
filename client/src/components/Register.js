@@ -21,27 +21,37 @@ export default function Register() {
     e.preventDefault();
     try {
       const newUser = { email, password, passwordCheck, firstName, lastName };
-      await axios.post("http://localhost:9090/register", newUser);
-      const loginRes = await axios.post("http://localhost:9090/login", {
-        email,
-        password,
-      });
-      setUserData({
-        token: loginRes.data.token,
-        id: loginRes.data.user,
-      });
-      console.log(user);
-      localStorage.setItem("auth-token", loginRes.data.token);
-      localStorage.setItem("id", loginRes.data.user.id);
-      history.push("/home");
+      const addNewUser = await axios
+        .post("http://localhost:9090/register", newUser)
+        .catch((error) => console.log(error));
+      console.log(addNewUser);
+      if (addNewUser.data.message) {
+        setError(addNewUser.data.message);
+      } else {
+        const loginRes = await axios
+          .post("http://localhost:9090/login", {
+            email,
+            password,
+          })
+          .catch((error) => console.log(error));
+        console.log(loginRes);
+        setUserData({
+          token: loginRes.data.token,
+          id: loginRes.data.user,
+        });
+
+        localStorage.setItem("auth-token", loginRes.data.token);
+        localStorage.setItem("id", loginRes.data.user.id);
+        history.push("/home");
+      }
     } catch (error) {
-      error.response.data.msg && setError(error.response.data.msg);
+      console.log(error.message);
     }
   };
   return (
     <div className="page-form">
-      {error && <Error error={error} clearError={() => setError("")} />}
       <form className="form-style-6" onSubmit={submit}>
+        {error && <Error error={error} clearError={() => setError("")} />}
         <h2 className="align">Register</h2>
         <label htmlFor="register-email">Email</label>
         <input

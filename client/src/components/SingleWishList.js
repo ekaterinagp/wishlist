@@ -22,7 +22,9 @@ export default function List({ match }) {
   const [init, setInit] = useState(true);
 
   const fetchDetailsCommentsWishes = async () => {
-    const res = await axios.get(`http://localhost:9090/list/${params.listId}`);
+    const res = await axios
+      .get(`http://localhost:9090/list/${params.listId}`)
+      .catch((error) => console.log(error));
 
     console.log(res);
 
@@ -47,18 +49,18 @@ export default function List({ match }) {
     setInit(false);
     setLoading(false);
   };
+
   const toggleComments = (id) => {
     console.log("opencomments", id);
-
     wishlist.forEach((one) => {
       if (one.id === id) {
         console.log(one);
         one.commentsAreOpen = !one.commentsAreOpen;
       }
     });
-
     setWishList([...wishlist]);
   };
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       fetchDetailsCommentsWishes();

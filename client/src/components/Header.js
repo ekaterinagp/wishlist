@@ -27,7 +27,7 @@ export default function Header() {
         }
       );
       setLoggedIn(true);
-      console.log(tokenRes);
+      // console.log(tokenRes);
     } else {
       setLoggedIn(false);
     }
@@ -38,10 +38,9 @@ export default function Header() {
   }, []);
 
   const register = () => history.push("/register");
-  const profile = () => history.push("/profile");
+  // const profile = () => history.push("/profile");
   const login = () => history.push("/login");
 
-  // const resetPassword = () => history.push("/resetPassword");
   const home = () => history.push("/home");
   // const wishlist = () => history.push("/wishlist");
 
@@ -74,16 +73,6 @@ export default function Header() {
               <Button color="primary" onClick={logOut}>
                 Log out
               </Button>
-              {/* <NavItem>
-                <NavLink
-                  to="/resetPassword"
-                  activeClassName="active"
-                  tag={RRNavLink}
-                  onClick={resetPassword}
-                >
-                  Reset password
-                </NavLink>
-              </NavItem> */}
             </>
           ) : (
             <>
@@ -107,7 +96,6 @@ export default function Header() {
                   Log in
                 </NavLink>
               </NavItem>
-              <NavItem></NavItem>
             </>
           )}
         </Nav>

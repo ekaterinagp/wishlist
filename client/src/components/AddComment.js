@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-// import "../css/Article.css";
+
 import axios from "axios";
+import Error from "./Error";
 
 const AddComment = (props) => {
   const [text, setText] = useState();
+  const [error, setError] = useState("");
   // console.log(props.listId);
   const loggedIn = localStorage.getItem("id");
   const listId = props.listId;
@@ -18,11 +20,16 @@ const AddComment = (props) => {
       const userid = localStorage.getItem("id");
       if (userid) {
         const comment = { text };
-        const addedCommentRes = await axios.post(
-          `http://localhost:9090/${userid}/comment/list/${listId}`,
-          comment
-        );
-        // console.log(addedCommentRes);
+        const addedCommentRes = await axios
+          .post(
+            `http://localhost:9090/${userid}/comment/list/${listId}`,
+            comment
+          )
+          .catch((error) => console.log(error));
+        console.log(addedCommentRes);
+        if (addedCommentRes.data.res) {
+          setError(addedCommentRes.data.res);
+        }
         props.parentMethod();
       }
     } catch (error) {
@@ -34,6 +41,7 @@ const AddComment = (props) => {
     <div>
       {loggedIn ? (
         <form onSubmit={addNewComment} className="add-comment form-style-6">
+          {error && <Error error={error} clearError={() => setError("")} />}
           <textarea
             type="text"
             id="text"

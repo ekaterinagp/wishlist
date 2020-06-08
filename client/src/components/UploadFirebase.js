@@ -34,13 +34,11 @@ const UploadFirebase = (props) => {
       .catch((error) => console.log(error));
     console.log(res);
     refreshPage();
-    // window.reload();
   };
 
   const handleFireBaseUpload = (e) => {
     e.preventDefault();
-    console.log("start of upload");
-    // async magic goes here...
+
     if (imageAsFile === "") {
       console.error(`not an image, the image file is a ${typeof imageAsFile}`);
     }
@@ -77,25 +75,14 @@ const UploadFirebase = (props) => {
     );
   };
 
-  // let ref = firebase.storage().ref();
-  // var starsRef = ref.child("images/IMG_20190801_143325.jpg");
-
-  // starsRef.getDownloadURL().then(function (url) {
-  //   console.log(url);
-  //   // setImageAsUrl({
-  //   //   imgUrl: url,
-  //   // });
-  // });
-
   useEffect(() => {
-    // console.log(JSON.stringify(imageAsUrl));
     if (imageAsUrl !== props.img) {
-      console.log(imageAsUrl);
+      // console.log(imageAsUrl);
       addLink(imageAsUrl);
     }
   }, [imageAsUrl]);
 
-  console.log(imageAsUrl);
+  // console.log(imageAsUrl);
   return (
     <div>
       <form onSubmit={handleFireBaseUpload}>

@@ -6,9 +6,6 @@ import { Link, useHistory } from "react-router-dom";
 import "../css/home.css";
 import Error from "./Error";
 
-import ListContainer from "./ListContainer";
-// import AddList from "./AddList";
-
 export default function Home() {
   const [error, setError] = useState("");
   const history = useHistory();
@@ -78,16 +75,14 @@ export default function Home() {
         user_id: localStorage.getItem("id"),
       };
 
-      const addedDataRes = await axios.post(
-        `http://localhost:9090/follow`,
-        data
-      );
+      const addedDataRes = await axios
+        .post(`http://localhost:9090/follow`, data)
+        .catch((error) => console.log(error));
       console.log({ addedDataRes });
 
       fetchFollows();
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -113,11 +108,9 @@ export default function Home() {
               <button className="example_b float" onClick={profile}>
                 My wish list
               </button>
-
-              {/* <AddList parentMethod={fetchLists} /> */}
             </>
           ) : (
-            <h3>Please log in </h3>
+            <h3 className="to-log-in">Please log in </h3>
           )}
         </div>
         {loading && !wishes.length ? (

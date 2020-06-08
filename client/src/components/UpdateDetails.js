@@ -36,16 +36,18 @@ const UpdateDetails = (props) => {
     try {
       const id = localStorage.getItem("id");
       const details = { color, size, shop };
-      const updateUserData = await axios.put(
-        `http://localhost:9090/edit/${id}/preferences`,
-        details
-      );
+      const updateUserData = await axios
+        .put(`http://localhost:9090/edit/${id}/preferences`, details)
+        .catch((error) => console.log(error));
       console.log(updateUserData);
-      history.push("/wishlist");
-      props.fetchHandler();
-      props.open(false);
+      if (updateUserData.data.message) {
+        setError(updateUserData.data.message);
+      } else {
+        history.push("/wishlist");
+        props.fetchHandler();
+        props.open(false);
+      }
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
       console.log(error.response.data.message);
     }
   };

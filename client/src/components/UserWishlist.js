@@ -5,7 +5,7 @@ import AddComment from "./AddComment";
 import axios from "axios";
 import Header from "./Header";
 import UploadFirebase from "./UploadFirebase";
-import ResetPassword from "./ResetPassword";
+
 import AddWish from "./AddWish";
 import Notification from "./Notification";
 import UpdateUser from "./UpdateUser";
@@ -19,7 +19,7 @@ export default function UserWishlist() {
   const [currentOpenState, setCurrentOpenState] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDetails, setIsOpenDetails] = useState(false);
-  const resetPassword = () => history.push("/resetPassword");
+
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notAuth, setNotAuth] = useState(false);
@@ -77,8 +77,7 @@ export default function UserWishlist() {
       setInit(false);
       setLoading(false);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -98,8 +97,7 @@ export default function UserWishlist() {
 
       setLoading(false);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -113,17 +111,15 @@ export default function UserWishlist() {
       setFollowers(res.data);
       setLoading(false);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
   const fetchDetails = async () => {
     try {
       setLoading(true);
-      const res = await axios
-        .get(`http://localhost:9090/details/${userId}`)
-        .catch((error) => console.log(error));
+      const res = await axios.get(`http://localhost:9090/details/${userId}`);
+      // .catch((error) => console.log(error));
       console.log(res.data);
       if (res.data) {
         setDetails(res.data);
@@ -131,8 +127,7 @@ export default function UserWishlist() {
 
       setLoading(false);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -148,8 +143,7 @@ export default function UserWishlist() {
       });
       console.log(notification);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -167,8 +161,7 @@ export default function UserWishlist() {
         .catch((error) => console.log(error));
       setWishList(updatedWishes.data.wishes);
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -181,8 +174,7 @@ export default function UserWishlist() {
       console.log(res);
       fetchDetailsCommentsWishes();
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -202,9 +194,7 @@ export default function UserWishlist() {
         one.commentsAreOpen = !one.commentsAreOpen;
       }
     });
-
     setWishList([...wishlist]);
-    // setIsOpen(!isOpen);
   };
 
   const toggleUpdate = () => {
@@ -235,7 +225,6 @@ export default function UserWishlist() {
       ) : (
         <>
           <Header />
-
           <div className="height">
             {loading ? (
               <p className="loading">Loading...</p>
@@ -337,9 +326,6 @@ export default function UserWishlist() {
                           </p>
                         </div>
                       </div>
-                      <Link to="/resetPassword" onClick={resetPassword}>
-                        Reset password
-                      </Link>
                     </div>
                   ) : (
                     <p> Please log in </p>

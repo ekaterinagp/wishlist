@@ -224,9 +224,9 @@ body {
   font-weight: bold;
 }
 
-.errorNotice button {
+/* .errorNotice button {
   margin: 10px;
-}
+} */
 
 .is-active {
   color: red;
@@ -283,4 +283,8 @@ body {
   float: right;
   margin-top: -20px;
   margin-right: -10px;
+}
+
+.add-comment.errorNotice button {
+  padding: 0;
 }

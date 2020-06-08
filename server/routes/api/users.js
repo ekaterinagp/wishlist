@@ -31,9 +31,12 @@ router.get("/details/:id", async (req, res) => {
     shop: null,
     color: null,
   };
-  const users = await User.query().where("id", id).withGraphFetched("details");
-  console.log(users);
-  if (users.details) {
+  const users = await User.query()
+    .where("id", id)
+    .withGraphFetched("details")
+    .limit(1);
+  console.log("user here", users);
+  if (users[0].details) {
     userDetails = {
       size: users[0].details.size,
       shop: users[0].details.shop,
@@ -95,9 +98,9 @@ router.post("/register", (req, res) => {
     password === passwordCheck
   ) {
     if (password.length < 8) {
-      return res
-        .status(400)
-        .send({ res: "Password does not fulfill the requirements" });
+      return res.send({
+        message: "Password must be 8 characters minimum",
+      });
     } else {
       bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
         if (error) {
@@ -110,7 +113,7 @@ router.post("/register", (req, res) => {
             .limit(1);
 
           if (existingUser[0]) {
-            return res.send({ res: "User already exists" });
+            return res.send({ message: "User already exists" });
           } else {
             const newUser = await User.query().insert({
               first_name: firstName,
@@ -119,19 +122,19 @@ router.post("/register", (req, res) => {
               password: hashedPassword,
             });
 
-            return res.send({ email: newUser.email });
+            return res.status(200).send({ email: newUser.email });
           }
         } catch (error) {
-          return res.send({ res: error.message });
+          return res.send({ message: error.message });
         }
       });
     }
   } else if (password !== passwordCheck) {
-    return res
-      .status(404)
-      .send({ res: "Password and repeated password are not the same" });
+    return res.send({
+      message: "Password and repeated password are not the same",
+    });
   } else {
-    return res.send({ res: "Missing fields" });
+    return res.send({ message: "Missing fields" });
   }
 });
 
@@ -146,9 +149,7 @@ router.post("/login", async (req, res) => {
     const user = users[0];
 
     if (!user) {
-      return res
-        .status(404)
-        .send({ message: "User with this email does not exist" });
+      return res.send({ message: "User with this email does not exist" });
     }
 
     if (email && password) {
@@ -176,7 +177,7 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
-    throw new Error(error);
+    return res.send({ response: error });
   }
 });
 
@@ -208,9 +209,7 @@ router.post("/change-password/:id", async (req, res) => {
     const users = await User.query().select().where({ email: email }).limit(1);
     const user = users[0];
     if (!user) {
-      return res
-        .status(404)
-        .send({ res: "User with this email does not exist" });
+      return res.send({ message: "User with this email does not exist" });
     }
     if (email && password && newPassword) {
       bcrypt.compare(password, user.password, function (err, hash) {
@@ -221,7 +220,7 @@ router.post("/change-password/:id", async (req, res) => {
           console.log("old password matched");
           if (newPassword < 8) {
             return res.send({
-              res: "Password does not fulfill the requirements",
+              message: "Password does not fulfill the requirements",
             });
           } else {
             console.log("new password will be hashed");
@@ -240,13 +239,13 @@ router.post("/change-password/:id", async (req, res) => {
                   console.log(updatedUser);
                   return res.send({ updatedUser });
                 } catch (error) {
-                  return res.send({ res: error.message });
+                  return res.send({ message: error.message });
                 }
               }
             );
           }
         } else {
-          return res.send({ res: "old password didn't match" });
+          return res.send({ message: "old password didn't match" });
         }
       });
     }
@@ -275,10 +274,10 @@ router.post("/:id/details/add", async (req, res) => {
       console.log(newDetails);
       return res.send(newDetails);
     } catch (error) {
-      return res.send({ response: error.message });
+      return res.send({ message: error.message });
     }
   } else {
-    return res.send({ response: "All fields are empty" });
+    return res.send({ message: "All fields are empty" });
   }
 });
 

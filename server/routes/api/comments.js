@@ -17,7 +17,7 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
   const wishID = req.params.wishID;
   const { text } = req.body;
   console.log(req.body);
-  if (text.length) {
+  if (text) {
     try {
       const newComment = await Comment.query().insert({
         text: text,
@@ -29,9 +29,7 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
       return res.sendStatus(500).send({ response: error.message });
     }
   } else {
-    return res.sendStatus(400).send({
-      response: "Comment should be more than 3 charcaters",
-    });
+    return res.send({ res: "Comment can not be empty" });
   }
 });
 

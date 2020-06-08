@@ -19,22 +19,23 @@ export default function Login() {
     e.preventDefault();
     try {
       const loginData = { email, password };
-      const loginRes = await axios.post(
-        "http://localhost:9090/login",
-        loginData
-      );
+      const loginRes = await axios
+        .post("http://localhost:9090/login", loginData)
+        .catch((error) => console.log(error));
       console.log(loginRes);
       setUser({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
       console.log(loginRes);
+      if (loginRes.data.message) {
+        setError(loginRes.data.message);
+      }
       localStorage.setItem("auth-token", loginRes.data.token);
       localStorage.setItem("id", loginRes.data.user.id);
       history.push("/home");
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message);
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 

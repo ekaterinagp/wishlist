@@ -10,6 +10,11 @@
   padding: 1em;
 }
 
+.to-log-in {
+  text-align: center;
+  padding: 20px;
+}
+
 .page {
   display: grid;
   grid-template-columns: 0.5fr 3fr;

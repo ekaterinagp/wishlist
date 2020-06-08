@@ -11,7 +11,6 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import UserWishlist from "./components/UserWishlist";
 import SingleWishList from "./components/SingleWishList";
-import ResetPassword from "./components/ResetPassword";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -56,8 +55,6 @@ export default function App() {
           <Route path="/login" component={Login} />
           <Route path="/wishlist" component={UserWishlist} />
           <Route exact path="/list/:listId" component={SingleWishList} />
-
-          <Route path="/resetPassword" component={ResetPassword} />
         </Switch>
       </BrowserRouter>
     </>

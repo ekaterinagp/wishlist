@@ -13,9 +13,11 @@ export default function StartPage() {
   useEffect(() => {
     const abortController = new AbortController();
     const getAdvice = async () => {
-      const res = await axios.get("https://api.adviceslip.com/advice", {
-        signal: abortController.signal,
-      });
+      const res = await axios
+        .get("https://api.adviceslip.com/advice", {
+          signal: abortController.signal,
+        })
+        .catch((error) => console.log(error));
       console.log(res.data.slip.advice);
       setAdvice(res.data.slip.advice);
       setLoading(false);
@@ -34,7 +36,7 @@ export default function StartPage() {
     <div className="start-container">
       <div className="top-part">
         {" "}
-        <h1>Wish list</h1>
+        <h1 className="start-title">Wish list</h1>
         <h4>Make sure you get only what you really want</h4>
       </div>
       <div className="login-part">
