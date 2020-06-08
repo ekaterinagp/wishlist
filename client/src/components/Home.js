@@ -117,7 +117,7 @@ export default function Home() {
               {/* <AddList parentMethod={fetchLists} /> */}
             </>
           ) : (
-            <h3>Please log in to add your list and read comments</h3>
+            <h3>Please log in </h3>
           )}
         </div>
         {loading && !wishes.length ? (

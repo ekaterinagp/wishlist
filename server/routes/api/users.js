@@ -324,7 +324,14 @@ router.put("/edit/:id/preferences", async (req, res) => {
         .limit(1);
       console.log(details);
       if (!details.length) {
-        return res.send("preferences are not created");
+        const newDetails = await Details.query().insert({
+          user_id: userId,
+          size: size,
+          color: color,
+          shop: shop,
+        });
+        console.log(newDetails);
+        return res.send(newDetails);
       } else {
         if (details.color != color) {
           await Details.query().where({ user_id: userId }).update({

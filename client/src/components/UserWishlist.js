@@ -100,7 +100,10 @@ export default function UserWishlist() {
       .get(`http://localhost:9090/details/${userId}`)
       .catch((error) => console.log(error));
     console.log(res.data);
-    setDetails(res.data);
+    if (res.data) {
+      setDetails(res.data);
+    }
+
     setLoading(false);
   };
 
@@ -122,7 +125,12 @@ export default function UserWishlist() {
       .catch((error) => console.log(error));
 
     console.log(res);
-    window.location.reload(false);
+    resetState();
+    const res1 = await axios
+      .get(`http://localhost:9090/list/${userId}`)
+      .catch((error) => console.log(error));
+    setWishList(res1.data.wishes);
+    // window.location.reload(false);
   };
 
   const deleteComment = async (id) => {
@@ -139,14 +147,14 @@ export default function UserWishlist() {
       msg: "",
       id: "",
     });
-    window.location.reload(false);
+    // window.location.reload(false);
   };
 
   const toggleComments = (id) => {
     console.log("opencomments", id);
     console.log(wishlist);
     wishlist.forEach((one) => {
-      if (one.id == id) {
+      if (one.id === id) {
         console.log(one);
         one.commentsAreOpen = !one.commentsAreOpen;
       }
@@ -166,21 +174,15 @@ export default function UserWishlist() {
 
   useEffect(() => {
     if (localStorage.getItem("id")) {
+      setLoading(true);
       fetchUserDetails();
       fetchFollowers();
       fetchDetails();
-    } else {
-      setNotAuth(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (localStorage.getItem("id")) {
       fetchDetailsCommentsWishes();
+      setLoading(false);
     } else {
       setNotAuth(true);
     }
-    console.log(notification);
   }, []);
 
   return (

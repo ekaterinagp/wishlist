@@ -9,8 +9,11 @@ export default function StartPage() {
   const register = () => history.push("/register");
   const [advice, setAdvice] = useState();
   const [loading, setLoading] = useState(true);
+  const abortController = new AbortController();
   const getAdvice = async () => {
-    const res = await axios.get("https://api.adviceslip.com/advice");
+    const res = await axios.get("https://api.adviceslip.com/advice", {
+      signal: abortController.signal,
+    });
     console.log(res.data.slip.advice);
     setAdvice(res.data.slip.advice);
     setLoading(false);
@@ -21,8 +24,19 @@ export default function StartPage() {
     const interval = setInterval(() => {
       getAdvice();
     }, 10000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      abortController.abort();
+    };
   }, []);
+
+  // useEffect(() => {
+  //   getAdvice();
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
   return (
     <div className="start-container">
       <div className="top-part">

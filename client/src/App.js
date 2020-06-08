@@ -45,11 +45,11 @@ export default function App() {
         {/* <Header /> */}
         {/* {loggedIn ? <Home /> : <StartPage />} */}
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={() => (loggedIn ? <Home /> : <StartPage />)}
-          />
+          {loggedIn ? (
+            <Route exact path="/" component={Home} />
+          ) : (
+            <Route exact path="/" component={StartPage} />
+          )}
 
           <Route path="/home" component={Home} />
           <Route path="/register" component={Register} />

@@ -1,12 +1,8 @@
 const router = require("express").Router();
 const config = require("config");
-// const bcrypt = require("bcrypt");
-// const saltRounds = 10;
-// const jwt = require("jsonwebtoken");
-// const auth = require("../../middleware/auth");
-// const jwSecret = config.get("jwtSecret");
+
 const User = require("../../models/User");
-// const Comment = require("../../models/Comment");
+
 const Wish = require("../../models/Wish");
 const auth = require("../../middleware/auth");
 

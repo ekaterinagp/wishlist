@@ -34,8 +34,14 @@
 .alert {
   display: block;
   position: absolute;
-  width: 300px;
-  height: 200px;
+  z-index: 10;
+  width: 20%;
+  height: 15%;
+  margin: 5% 0 50% 50%;
+  background-color: #343a40;
+  color: white;
+  display: grid;
+  grid-template-rows: 1fr 2fr 2fr;
 }
 
 .create-list {

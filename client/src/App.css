@@ -11,6 +11,11 @@ body {
   color: blue;
 }
 
+#button-close {
+  margin-left: 260px;
+  color: white;
+}
+
 .form-style-6 {
   font: 95% Arial, Helvetica, sans-serif;
   max-width: 400px;
