@@ -43,43 +43,59 @@ router.get("/list/:id", async (req, res) => {
     firstName: null,
     lastName: null,
   };
-  let list = await Wish.query()
-    .where({ user_id: user_id })
-    .withGraphFetched("users")
-    .withGraphFetched("comments.[users]");
-  console.log(list);
-  list.forEach((list) => {
-    user = {
-      name: list.users.first_name,
-      lastName: list.users.last_name,
-      email: list.users.email,
-      wishes: [],
-    };
-  });
+  try {
+    let list = await Wish.query()
+      .where({ user_id: user_id })
+      .withGraphFetched("users")
+      .withGraphFetched("comments.[users]");
+    console.log(list);
+    if (list.length) {
+      list.forEach((list) => {
+        user = {
+          name: list.users.first_name,
+          lastName: list.users.last_name,
+          email: list.users.email,
+          wishes: [],
+        };
+      });
 
-  list.forEach((list) => {
-    oneWish = {
-      id: list.id,
-      wish: list.wish,
-      desc: list.desc,
-      imgURL: list.imgURL,
-      created: list.created_at,
-      comments: [],
-    };
-    user.wishes.push(oneWish);
-    list.comments.forEach((comment) => {
-      oneComment = {
-        id: comment.id,
-        text: comment.text,
-        created: comment.created_at,
-        firstName: comment.users.first_name,
-        lastName: comment.users.last_name,
-      };
-      oneWish.comments.push(oneComment);
-    });
-  });
-
-  return res.send(user);
+      list.forEach((list) => {
+        oneWish = {
+          id: list.id,
+          wish: list.wish,
+          desc: list.desc,
+          imgURL: list.imgURL,
+          created: list.created_at,
+          comments: [],
+        };
+        user.wishes.push(oneWish);
+        list.comments.forEach((comment) => {
+          oneComment = {
+            id: comment.id,
+            text: comment.text,
+            created: comment.created_at,
+            firstName: comment.users.first_name,
+            lastName: comment.users.last_name,
+          };
+          oneWish.comments.push(oneComment);
+        });
+      });
+      // return res.send(user);
+    } else {
+      const userAlone = await User.query().where({ id: user_id });
+      userAlone.forEach((one) => {
+        user = {
+          name: one.first_name,
+          lastName: one.last_name,
+          email: one.email,
+          wishes: [],
+        };
+      });
+    }
+    return res.send(user);
+  } catch (error) {
+    return res.send(error);
+  }
 });
 
 //@route Add wish

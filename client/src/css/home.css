@@ -13,6 +13,17 @@
   height: 100%;
 }
 
+.wrapper {
+  display: grid;
+  grid-template-rows: 3fr 2fr;
+}
+
+.no-wish {
+  text-align: center;
+  font-weight: bold;
+  padding: 2em;
+}
+
 .list-title {
   text-align: center;
   padding: 1rem;

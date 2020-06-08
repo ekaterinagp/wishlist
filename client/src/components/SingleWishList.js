@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import "../css/home.css";
 import AddComment from "./AddComment";
 import axios from "axios";
 import Header from "./Header";
@@ -139,7 +139,9 @@ export default function List({ match }) {
                       ))}
                     </div>
                   ) : (
-                    <h2>Create your wish list</h2>
+                    <h2 className="no-wish">
+                      {userData.name} {userData.lastName} has no wishes yet{" "}
+                    </h2>
                   )}
                 </div>
               </div>
