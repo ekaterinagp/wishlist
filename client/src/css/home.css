@@ -15,7 +15,7 @@
 
 .wrapper {
   display: grid;
-  grid-template-rows: 3fr 2fr;
+  grid-template-rows: 2fr 2fr;
 }
 
 .no-wish {
@@ -69,9 +69,15 @@ ul.mr-auto navbar-nav {
   overflow: hidden;
 }
 
+.div-follow {
+  display: grid;
+  justify-self: center;
+  margin-bottom: 10px;
+}
+
 .no-wishes {
   padding: 10px;
-  font-size: 20px;
+  font-size: 15px;
   text-align: center;
 }
 

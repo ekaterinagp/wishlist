@@ -83,7 +83,8 @@ export default function Home() {
         data
       );
       console.log({ addedDataRes });
-      fetchLists();
+
+      fetchFollows();
     } catch (error) {
       error.response.data.message && setError(error.response.data.message);
       console.log(error.response.data.message);
@@ -124,92 +125,90 @@ export default function Home() {
         ) : (
           <>
             <div className="wrapper">
-              <div className="articleContainer">
-                {console.log(wishes)}
-                {console.log("follows", follows)}
-                {wishes
-                  .filter((wish) => wish.id != userID)
-                  .filter((wish) =>
-                    follows ? follows.includes(wish.id) : null
-                  )
-                  .map(({ id, first_name, last_name, wishes }) => (
-                    <div className="article-home" key={`random-${id}`}>
-                      <div>
-                        <h2 className="list-title">
-                          {first_name} {last_name}
-                        </h2>
+              <div className="top-wrapper">
+                <h2>You follow</h2>
+                {!follows ? <p>You do not follow any lists yet</p> : null}
+                <div className="articleContainer">
+                  {console.log(wishes)}
+                  {console.log("follows", follows)}
+                  {wishes
+                    .filter((wish) => wish.id != userID)
+                    .filter((wish) =>
+                      follows ? follows.includes(wish.id) : null
+                    )
+                    .map(({ id, first_name, last_name, wishes }) => (
+                      <div className="article-home" key={`random-${id}`}>
+                        <div>
+                          <h2 className="list-title">
+                            {first_name} {last_name}
+                          </h2>
+                        </div>
+                        <div className="wishes-middle">
+                          {wishes.length ? (
+                            wishes.map(({ wish, desc, id }) => {
+                              return (
+                                <div className="wishOne" key={id}>
+                                  <p className="wish-title">{wish}</p>
+                                  <p className="wish-desc">{desc}</p>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <p className="no-wishes">No wishes yet</p>
+                          )}
+                        </div>
+                        <div className="button-read">
+                          {loggedIn ? (
+                            <Link to={`/list/${id}`}>
+                              <button
+                                className="example_b"
+                                align="center"
+                                id={id}
+                              >
+                                Read more
+                              </button>
+                            </Link>
+                          ) : (
+                            <h5>Please log in to read/add comments</h5>
+                          )}
+                        </div>
                       </div>
-                      <div className="wishes-middle">
-                        {wishes.length ? (
-                          wishes.map(({ wish, desc, id }) => {
-                            return (
-                              <div className="wishOne" key={id}>
-                                <p className="wish-title">{wish}</p>
-                                <p className="wish-desc">{desc}</p>
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <p className="no-wishes">No wishes yet</p>
-                        )}
-                      </div>
-                      <div className="button-read">
-                        {loggedIn ? (
-                          <Link to={`/list/${id}`}>
-                            <button
-                              className="example_b"
-                              align="center"
-                              id={id}
-                            >
-                              Read more
-                            </button>
-                          </Link>
-                        ) : (
-                          <h5>Please log in to read/add comments</h5>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-              <div className="articleContainer">
-                {console.log(wishes)}
-                {console.log("follows", follows)}
-                {wishes
-                  .filter((wish) => wish.id != userID)
-                  .filter((wish) =>
-                    follows ? !follows.includes(wish.id) : null
-                  )
-                  .map(({ id, first_name, last_name, wishes }) => (
-                    <div className="article-home" key={`random-${id}`}>
-                      <div>
-                        <h2 className="list-title">
-                          {first_name} {last_name}
-                        </h2>
+              <div className="bottom-wrapper">
+                <h2>Add friends</h2>
+                <div className="articleContainer">
+                  {console.log(wishes)}
+                  {console.log("follows", follows)}
+                  {wishes
+                    .filter((wish) => wish.id != userID)
+                    .filter((wish) =>
+                      follows ? !follows.includes(wish.id) : null
+                    )
+                    .map(({ id, first_name, last_name, wishes }) => (
+                      <div className="article-home" key={`random-${id}`}>
+                        <div>
+                          <h2 className="list-title">
+                            {first_name} {last_name}
+                          </h2>
+                        </div>
+
+                        <p className="no-wishes">
+                          You need to follow user to read lists and comments
+                        </p>
+                        <div className="div-follow">
+                          <button
+                            className="example_b"
+                            id={id}
+                            onClick={handelClickFollow}
+                          >
+                            Follow
+                          </button>
+                        </div>
                       </div>
-                      <div className="wishes-middle">
-                        {wishes.length ? (
-                          wishes.map(({ wish, desc, id }) => {
-                            return (
-                              <div className="wishOne" key={id}>
-                                <p className="wish-title">{wish}</p>
-                                <p className="wish-desc">{desc}</p>
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <p className="no-wishes">No wishes yet</p>
-                        )}
-                      </div>
-                      <p className="no-wishes">
-                        You need to follow user to read lists and comments
-                      </p>
-                      <div className="div-follow">
-                        <button id={id} onClick={handelClickFollow}>
-                          Follow
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
             </div>
           </>
