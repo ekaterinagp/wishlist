@@ -275,11 +275,83 @@ router.post("/:id/details/add", async (req, res) => {
       return res.send({ response: error.message });
     }
   } else {
-    return res.send({ response: "All empty fields" });
+    return res.send({ response: "All fields are empty" });
   }
 });
 
-//@route delete wish
+//@route edit personal details ADD AUTH
+router.put("/edit/:id/settings", async (req, res) => {
+  const userId = req.params.id;
+  const { firstName, lastName, email } = req.body;
+  if (firstName && lastName && email) {
+    try {
+      const user = await User.query().select().where({ id: userId });
+
+      if (user.first_name != firstName) {
+        await User.query().where({ id: userId }).update({
+          first_name: firstName,
+        });
+      }
+      if (user.last_name != lastName) {
+        await User.query().where({ id: userId }).update({
+          last_name: lastName,
+        });
+      }
+      if (user.email != email) {
+        await User.query().where({ id: userId }).update({
+          email: email,
+        });
+      }
+      return res.send({ response: "user updated" });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return res.send({ response: "Fields are missing" });
+  }
+});
+
+//@route edit preferences ADD AUTH
+router.put("/edit/:id/preferences", async (req, res) => {
+  const userId = req.params.id;
+  const { size, color, shop } = req.body;
+  if (size || color || shop) {
+    try {
+      console.log("we are in try");
+      const details = await Details.query()
+        .select()
+        .where({ user_id: userId })
+        .limit(1);
+      console.log(details);
+      if (!details.length) {
+        return res.send("preferences are not created");
+      } else {
+        if (details.color != color) {
+          await Details.query().where({ user_id: userId }).update({
+            color: color,
+          });
+        }
+        if (details.size != size) {
+          await Details.query().where({ user_id: userId }).update({
+            size: size,
+          });
+        }
+        if (details.shop != shop) {
+          await Details.query().where({ user_id: userId }).update({
+            shop: shop,
+          });
+        }
+        return res.send({ response: "preferences updated" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return res.send({ response: "Fields are missing" });
+  }
+});
+
+//@route delete user
 router.delete("/delete/:id", auth, async (req, res) => {
   const userId = req.params.id;
   try {
