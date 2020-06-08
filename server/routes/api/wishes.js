@@ -138,6 +138,48 @@ router.post("/:id/image/add", async (req, res) => {
   }
 });
 
+//@route update wish ADD auth
+router.put("/edit/wish/:id", async (req, res) => {
+  const wishId = req.params.id;
+  const { wish, desc } = req.body;
+
+  if (wish && desc) {
+    try {
+      const wishToUpdate = await Wish.query().where("id", wishId);
+      if (!wishToUpdate.length) {
+        return res.send({ response: "there is no wish with this id" });
+      } else {
+        if (wishToUpdate.wish != wish) {
+          await Wish.query().where({ id: wishId }).update({
+            wish: wish,
+          });
+        }
+        if (wishToUpdate.desc != desc) {
+          await Wish.query().where({ id: wishId }).update({
+            desc: desc,
+          });
+        }
+        return res.send({ response: "wish updated" });
+      }
+    } catch (error) {
+      return res.send(error);
+    }
+  } else {
+    return res.send({ response: "Fields are not filled" });
+  }
+});
+
+//@route delete a wish
+router.delete("/deletewish/:id", auth, async (req, res) => {
+  const wishId = req.params.id;
+  try {
+    const deletedWish = await Wish.query().delete().where({ id: wishId });
+    res.json({ msg: "wish is deleted" });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
+
 //@route to upload image to backend folder
 router.post("/upload", (req, res) => {
   if (req.files === null) {
@@ -156,16 +198,6 @@ router.post("/upload", (req, res) => {
       filePath: `../../uploads/${file.name}`,
     });
   });
-});
-
-router.delete("/deletewish/:id", auth, async (req, res) => {
-  const wishId = req.params.id;
-  try {
-    const deletedWish = await Wish.query().delete().where({ id: wishId });
-    res.json({ msg: "wish is deleted" });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
 });
 
 module.exports = router;

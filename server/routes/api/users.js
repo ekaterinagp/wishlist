@@ -279,7 +279,7 @@ router.post("/:id/details/add", async (req, res) => {
   }
 });
 
-//@route edit personal details ADD AUTH
+//@route update personal details ADD AUTH
 router.put("/edit/:id/settings", async (req, res) => {
   const userId = req.params.id;
   const { firstName, lastName, email } = req.body;
@@ -311,7 +311,7 @@ router.put("/edit/:id/settings", async (req, res) => {
   }
 });
 
-//@route edit preferences ADD AUTH
+//@route update preferences ADD AUTH
 router.put("/edit/:id/preferences", async (req, res) => {
   const userId = req.params.id;
   const { size, color, shop } = req.body;
