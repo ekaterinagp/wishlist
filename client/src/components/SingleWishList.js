@@ -39,6 +39,11 @@ export default function List({ match }) {
           found.commentsAreOpen = wish.commentsAreOpen;
         });
       }
+      res.data.wishes.forEach((one) => {
+        if (one.comments.length) {
+          one.comments.reverse();
+        }
+      });
       setWishList(res.data.wishes);
     }
     setUserData({
@@ -119,15 +124,18 @@ export default function List({ match }) {
                               <p className="description">{desc}</p>
                               <div id={id}>
                                 {!imgURL ? (
-                                  <img
-                                    className="wish-img"
-                                    src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
-                                  ></img>
+                                  <div
+                                    className="wish-div"
+                                    style={{
+                                      backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media)`,
+                                    }}
+                                  ></div>
                                 ) : (
-                                  <img
-                                    className="wish-img"
-                                    src={imgURL}
-                                    alt="image tag"
+                                  <div
+                                    className="wish-div"
+                                    style={{
+                                      backgroundImage: `url(${imgURL})`,
+                                    }}
                                   />
                                 )}
                               </div>

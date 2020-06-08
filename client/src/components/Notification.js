@@ -4,13 +4,11 @@ const Notification = ({ msg, parentMethod, id, resetState }) => {
   console.log(msg, id);
   return (
     <div className="alert alert-info" role="alert">
-      {console.log(msg)}
-
       <button
+        onClick={() => resetState()}
         id="button-close"
         type="button"
         className="close"
-        data-dismiss="alert"
         aria-label="Close"
       >
         <span aria-hidden="true">&times;</span>

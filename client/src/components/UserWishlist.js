@@ -59,7 +59,7 @@ export default function UserWishlist() {
             found.commentsAreOpen = wish.commentsAreOpen;
           });
         }
-        console.log("look here!!!", res.data.wishes);
+
         res.data.wishes.forEach((one) => {
           if (one.comments.length) {
             one.comments.reverse();
@@ -119,7 +119,6 @@ export default function UserWishlist() {
     try {
       setLoading(true);
       const res = await axios.get(`http://localhost:9090/details/${userId}`);
-      // .catch((error) => console.log(error));
       console.log(res.data);
       if (res.data) {
         setDetails(res.data);
@@ -131,11 +130,10 @@ export default function UserWishlist() {
     }
   };
 
-  const confirmDelete = (e) => {
-    e.preventDefault();
+  const confirmDelete = (id) => {
     try {
       resetState();
-      const id = e.target.id;
+
       console.log(id);
       setNotification({
         msg: "Are you sure you want to delete this wish?",
@@ -358,9 +356,8 @@ export default function UserWishlist() {
                           <div className="top-div-wish">
                             {" "}
                             <p
-                              id={id}
                               className="delete-btn"
-                              onClick={confirmDelete}
+                              onClick={() => confirmDelete(id)}
                             >
                               &#10006;
                             </p>

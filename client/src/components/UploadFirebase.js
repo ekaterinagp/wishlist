@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { storage } from "./firebase-config";
 import { firebase } from "./firebase-config";
+import "../css/profile.css";
 import uui from "uuidv4";
 import axios from "axios";
 
@@ -99,7 +100,11 @@ const UploadFirebase = (props) => {
           src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
         ></img>
       ) : (
-        <img className="wish-img" src={imageAsUrl} alt="image tag" />
+        // <img className="wish-img" src={imageAsUrl} alt="image tag" />
+        <div
+          className="wish-div"
+          style={{ backgroundImage: `url(${imageAsUrl})` }}
+        />
       )}
     </div>
   );
