@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../css/home.css";
-import AddComment from "./AddComment";
+import AddComment from "./common/AddComment";
 import axios from "axios";
 import Header from "./Header";
 // import UploadFirebase from "./UploadFirebase";

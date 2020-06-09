@@ -7,7 +7,9 @@ import { useHistory, BrowserRouter, Link } from "react-router-dom";
 export default function StartPage() {
   const history = useHistory();
   const register = () => history.push("/register");
-  const [advice, setAdvice] = useState();
+  const [advice, setAdvice] = useState(
+    "If you've nothing nice to say, say nothing."
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

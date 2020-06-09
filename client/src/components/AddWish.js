@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../css/wishlist.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Error from "./Error";
+import Error from "./common/Error";
 
 const AddWish = (props) => {
   const [wish, setWish] = useState("");

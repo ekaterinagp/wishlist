@@ -6,6 +6,21 @@
   margin: 1em;
 }
 
+.navbar-expand-md {
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+}
+.mr-10.navbar-nav {
+  justify-self: end;
+}
+.justify {
+  width: 70%;
+  justify-self: center;
+}
+.welcome-top {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+}
 .title-friends {
   padding: 1em;
 }

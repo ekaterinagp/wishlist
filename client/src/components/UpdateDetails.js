@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Error from "./Error";
+import Error from "./common/Error";
 import "../css/profile.css";
 
 const UpdateDetails = (props) => {

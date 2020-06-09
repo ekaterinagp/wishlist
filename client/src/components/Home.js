@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import Header from "./Header";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+// import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Link, useHistory } from "react-router-dom";
 import "../css/home.css";
-import Error from "./Error";
+// import Error from "../common/Error";
 
 export default function Home() {
   const [error, setError] = useState("");
@@ -101,13 +101,15 @@ export default function Home() {
         <div className="welcome">
           {userData.name ? (
             <>
-              <h2 className="welcome-title">
-                Welcome <br></br> {userData.name} {userData.lastName}
-              </h2>
+              <div className="welcome-top">
+                <h2 className="welcome-title">
+                  Welcome <br></br> {userData.name} {userData.lastName}
+                </h2>
 
-              <button className="example_b float" onClick={profile}>
-                My wish list
-              </button>
+                <button className="example_b justify" onClick={profile}>
+                  My wish list
+                </button>
+              </div>
             </>
           ) : (
             <h3 className="to-log-in">Please log in </h3>

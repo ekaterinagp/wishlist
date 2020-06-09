@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "../css/profile.css";
 import { useHistory, Link } from "react-router-dom";
-import AddComment from "./AddComment";
+import AddComment from "./common/AddComment";
 import axios from "axios";
 import Header from "./Header";
 import UploadFirebase from "./UploadFirebase";
 
 import AddWish from "./AddWish";
-import Notification from "./Notification";
+import Notification from "./common/Notification";
 import UpdateUser from "./UpdateUser";
 import UpdateDetails from "./UpdateDetails";
-import Error from "./Error";
+// import Error from "./Error";
 
 export default function UserWishlist() {
   const [error, setError] = useState("");

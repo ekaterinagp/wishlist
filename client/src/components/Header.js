@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, NavLink as RRNavLink } from "react-router-dom";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+// import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from "reactstrap";
-import Login from "./Login";
-import Home from "./Home";
+// import Login from "../home/Login";
+// import Home from "../home/Home";
 
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -42,17 +42,23 @@ export default function Header() {
   const login = () => history.push("/login");
 
   const home = () => history.push("/home");
-  // const wishlist = () => history.push("/wishlist");
+  const startpage = () => history.push("/");
+
+  const goOut = () => {
+    history.push("/");
+  };
 
   const logOut = () => {
     setUserData({
-      token: undefined,
-      id: undefined,
+      token: "",
+      id: "",
     });
-    localStorage.setItem("auth-token", "");
-    localStorage.setItem("id", "");
+    // localStorage.setItem("auth-token", "");
+    // localStorage.setItem("id", "");
+    localStorage.removeItem("id");
+    localStorage.removeItem("auth-token");
     // window.location.reload();
-    history.push("/");
+    goOut();
   };
 
   return (

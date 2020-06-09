@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Error from "./Error";
+import Error from "./common/Error";
 
 export default function Register() {
   const [email, setEmail] = useState();

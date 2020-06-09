@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
-import Error from "./Error";
+import Error from "./common/Error";
 
 export default function Login() {
   const [email, setEmail] = useState();
