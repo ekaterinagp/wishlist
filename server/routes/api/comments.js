@@ -12,7 +12,7 @@ router.get("/comments", async (req, res) => {
 });
 
 //router add comment
-router.post("/:userID/comment/list/:wishID/", async (req, res) => {
+router.post("/:userID/addcomment/:wishID/", async (req, res) => {
   const userID = req.params.userID;
   const wishID = req.params.wishID;
   const { text } = req.body;
@@ -26,10 +26,10 @@ router.post("/:userID/comment/list/:wishID/", async (req, res) => {
       });
       return res.send(newComment);
     } catch (error) {
-      return res.sendStatus(500).send({ response: error.message });
+      return res.status(500).send({ response: error.message });
     }
   } else {
-    return res.send({ res: "Comment can not be empty" });
+    return res.json({ error: "Comment can not be empty" });
   }
 });
 
@@ -42,7 +42,7 @@ router.delete("/deletecomment/:id", auth, async (req, res) => {
       .where({ id: commentId });
     res.json({ msg: "comment is deleted" });
   } catch (err) {
-    res.json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 

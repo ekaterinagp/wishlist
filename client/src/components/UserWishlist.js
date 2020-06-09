@@ -71,6 +71,7 @@ export default function UserWishlist() {
     const res = await axios
       .get(`http://localhost:9090/user/${userId}`)
       .catch((error) => console.log(error));
+    console.log(res);
 
     setUserData({
       name: res.data.firstName,
@@ -296,12 +297,12 @@ export default function UserWishlist() {
                     <p> Please log in </p>
                   )}
                 </div>
-                {console.log(wishlist)}
+                {/* {console.log(wishlist)} */}
                 {notification.msg ? (
                   <Notification
                     msg={notification.msg}
                     id={notification.id}
-                    parentMethod={deleteWish}
+                    deleteWish={deleteWish}
                     resetState={resetState}
                   />
                 ) : null}
@@ -331,11 +332,7 @@ export default function UserWishlist() {
                             <h2 className="list-title">{wish}</h2>
                             <p className="description">{desc}</p>
                             <div id={id}>
-                              <UploadFirebase
-                                wishID={id}
-                                img={imgURL}
-                                parentMethod={fetchDetailsCommentsWishes}
-                              />
+                              <UploadFirebase wishID={id} img={imgURL} />
                             </div>
                           </div>
                           <button
@@ -354,7 +351,7 @@ export default function UserWishlist() {
                             }}
                           >
                             <div className="middle-div-comments">
-                              {console.log(comments)}
+                              {/* {console.log(comments)} */}
                               {comments.map(
                                 ({
                                   text,
@@ -371,7 +368,7 @@ export default function UserWishlist() {
                                       <p className="comment-text">{text}</p>
 
                                       <p className="comment-time">{created}</p>
-                                      {console.log(id)}
+                                      {/* {console.log(id)} */}
                                       <p
                                         className="delete-comment"
                                         onClick={() => deleteComment(id)}
@@ -387,7 +384,7 @@ export default function UserWishlist() {
                             <div className="bottom-div-add-comment">
                               <AddComment
                                 listId={id}
-                                parentMethod={fetchDetailsCommentsWishes}
+                                fetchComments={fetchDetailsCommentsWishes}
                               />
                             </div>
                           </div>
@@ -395,14 +392,14 @@ export default function UserWishlist() {
                       )
                     )}
                     <div className="article">
-                      <AddWish parentMethod={fetchDetailsCommentsWishes} />
+                      <AddWish fetchAll={fetchDetailsCommentsWishes} />
                     </div>
                   </div>
                 ) : (
                   <div className="create-list">
                     <h2>Create your wish list</h2>
                     <div className="article">
-                      <AddWish parentMethod={fetchDetailsCommentsWishes} />
+                      <AddWish fetchAll={fetchDetailsCommentsWishes} />
                     </div>
                   </div>
                 )}

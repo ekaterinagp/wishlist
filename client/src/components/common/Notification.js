@@ -1,6 +1,6 @@
 import React from "react";
 
-const Notification = ({ msg, parentMethod, id, resetState }) => {
+const Notification = ({ msg, deleteWish, id, resetState }) => {
   console.log(msg, id);
   return (
     <div className="alert alert-info" role="alert">
@@ -14,7 +14,7 @@ const Notification = ({ msg, parentMethod, id, resetState }) => {
         <span aria-hidden="true">&times;</span>
       </button>
       {msg}
-      <button className="example_b" onClick={() => parentMethod(id)}>
+      <button className="example_b" onClick={() => deleteWish(id)}>
         Delete
       </button>
     </div>

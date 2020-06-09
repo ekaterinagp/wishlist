@@ -59,7 +59,7 @@ router.post("/follow", async (req, res) => {
         return res.send(newFollower);
       }
     } catch (error) {
-      return res.send({ res: error.message });
+      return res.status(500).send({ message: error.message });
     }
   }
 });
@@ -77,7 +77,7 @@ router.delete("/unfollow", async (req, res) => {
         .delete();
       return res.send(unfollow);
     } catch (error) {
-      return res.send({ res: error.message });
+      return res.status(500).send({ res: error.message });
     }
   }
 });

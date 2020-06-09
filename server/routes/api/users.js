@@ -29,20 +29,24 @@ router.get("/details/:id", async (req, res) => {
     shop: null,
     color: null,
   };
-  const users = await User.query()
-    .where("id", id)
-    .withGraphFetched("details")
-    .limit(1);
-  console.log("user here", users);
-  if (users[0].details) {
-    userDetails = {
-      size: users[0].details.size,
-      shop: users[0].details.shop,
-      color: users[0].details.color,
-    };
-    return res.send(userDetails);
-  } else {
-    return res.send({ res: "No details yet" });
+  try {
+    const users = await User.query()
+      .where("id", id)
+      .withGraphFetched("details")
+      .limit(1);
+    console.log("user here", users);
+    if (users[0].details) {
+      userDetails = {
+        size: users[0].details.size,
+        shop: users[0].details.shop,
+        color: users[0].details.color,
+      };
+      return res.send(userDetails);
+    } else {
+      return res.send({ res: "No details yet" });
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
 });
 
@@ -55,25 +59,29 @@ router.get("/userswishes", async (req, res) => {
 //@route GET one user by id + wishes
 router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
-  const user = await User.query().where("id", id).withGraphFetched("wishes");
-  console.log(user);
+  try {
+    const user = await User.query().where("id", id).withGraphFetched("wishes");
+    console.log(user);
 
-  let newUser = {
-    firstName: user[0].first_name,
-    lastName: user[0].last_name,
-    email: user[0].email,
-    wishes: [],
-  };
-
-  user[0].wishes.forEach((wish) => {
-    let newWish = {
-      wish: wish.wish,
-      desc: wish.desc,
+    let newUser = {
+      firstName: user[0].first_name,
+      lastName: user[0].last_name,
+      email: user[0].email,
+      wishes: [],
     };
-    newUser.wishes.push(newWish);
-  });
 
-  return res.send(newUser);
+    user[0].wishes.forEach((wish) => {
+      let newWish = {
+        wish: wish.wish,
+        desc: wish.desc,
+      };
+      newUser.wishes.push(newWish);
+    });
+
+    return res.send(newUser);
+  } catch (error) {
+    return res.status(500).send({ error: error.message });
+  }
 });
 
 //@route POST register user
@@ -95,7 +103,7 @@ router.post("/register", (req, res) => {
     } else {
       bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
         if (error) {
-          return res.send({ message: "error hashing password" });
+          return res.status(500).send({ message: "error hashing password" });
         }
         try {
           const existingUser = await User.query()
@@ -116,7 +124,7 @@ router.post("/register", (req, res) => {
             return res.status(200).send({ email: newUser.email });
           }
         } catch (error) {
-          return res.send({ message: error.message });
+          return res.status(500).send({ message: error.message });
         }
       });
     }
@@ -168,7 +176,7 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
-    return res.send({ response: error });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -252,10 +260,7 @@ router.post("/:id/details/add", async (req, res) => {
   const { size, color, shop } = req.body;
   console.log(req.body);
   if (size || color || shop) {
-    console.log("something is here");
-
     try {
-      console.log("we are in a try");
       const newDetails = await Details.query().insert({
         user_id: userId,
         size: size,
@@ -265,7 +270,7 @@ router.post("/:id/details/add", async (req, res) => {
       console.log(newDetails);
       return res.send(newDetails);
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.status(500).send({ message: error.message });
     }
   } else {
     return res.send({ message: "All fields are empty" });
@@ -295,9 +300,9 @@ router.put("/edit/:id/settings", auth, async (req, res) => {
           email: email,
         });
       }
-      return res.send({ response: "user updated" });
+      return res.status(200).send({ response: "user updated" });
     } catch (error) {
-      console.log(error);
+      return res.status(500).send({ message: error.message });
     }
   } else {
     return res.send({ response: "Fields are missing" });
@@ -341,10 +346,10 @@ router.put("/edit/:id/preferences", auth, async (req, res) => {
             shop: shop,
           });
         }
-        return res.send({ response: "preferences updated" });
+        return res.status(200).send({ response: "preferences updated" });
       }
     } catch (error) {
-      console.log(error);
+      return res.status(500).send({ message: error.message });
     }
   } else {
     return res.send({ response: "Fields are missing" });
@@ -356,9 +361,9 @@ router.delete("/delete/:id", auth, async (req, res) => {
   const userId = req.params.id;
   try {
     const deletedUser = await User.query().delete().where({ id: userId });
-    res.json(deletedUser);
-  } catch (err) {
-    res.json({ error: err.message });
+    res.status(200).send({ response: "user is deleted" });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
 });
 

@@ -90,12 +90,12 @@ router.get("/list/:id", async (req, res) => {
     }
     return res.send(user);
   } catch (error) {
-    return res.send(error);
+    return res.status(500).send({ error: error.message });
   }
 });
 
 //@route Add wish
-router.post("/:id/wish/add", async (req, res) => {
+router.post("/:id/addwish", async (req, res) => {
   const id = req.params.id;
 
   const { wish, desc } = req.body;
@@ -124,7 +124,7 @@ router.post("/:id/wish/add", async (req, res) => {
 });
 
 //@route for save image path to db
-router.post("/:id/image/add", async (req, res) => {
+router.post("/:id/addimage", async (req, res) => {
   const wishID = req.params.id;
 
   const { imgUrl } = req.body;
@@ -137,7 +137,7 @@ router.post("/:id/image/add", async (req, res) => {
 
       return res.send({ updatedLink });
     } catch (error) {
-      return res.send({ response: error.message });
+      return res.status(500).send({ error: error.message });
     }
   } else {
     return res.send({ response: "Fields are not filled correctly" });
@@ -168,7 +168,7 @@ router.put("/edit/wish/:id", auth, async (req, res) => {
         return res.send({ response: "wish updated" });
       }
     } catch (error) {
-      return res.send(error);
+      return res.status(500).send({ error: error.message });
     }
   } else {
     return res.send({ response: "Fields are not filled" });
@@ -181,8 +181,8 @@ router.delete("/deletewish/:id", auth, async (req, res) => {
   try {
     const deletedWish = await Wish.query().delete().where({ id: wishId });
     res.json({ msg: "wish is deleted" });
-  } catch (err) {
-    res.json({ error: err.message });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
 });
 
