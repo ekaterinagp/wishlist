@@ -16,7 +16,7 @@ router.post("/:userID/addcomment/:wishID/", async (req, res) => {
   const userID = req.params.userID;
   const wishID = req.params.wishID;
   const { text } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   if (text) {
     try {
       const newComment = await Comment.query().insert({
@@ -29,7 +29,7 @@ router.post("/:userID/addcomment/:wishID/", async (req, res) => {
       return res.status(500).send({ response: error.message });
     }
   } else {
-    return res.json({ error: "Comment can not be empty" });
+    return res.status(403).send({ error: "Comment can not be empty" });
   }
 });
 
@@ -41,8 +41,8 @@ router.delete("/deletecomment/:id", auth, async (req, res) => {
       .delete()
       .where({ id: commentId });
     res.json({ msg: "comment is deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
 });
 

@@ -102,9 +102,9 @@ router.post("/:id/addwish", async (req, res) => {
 
   if (wish && desc) {
     if (wish.length < 3) {
-      return res.send({
-        response: "Wish should be min 3 char",
-      });
+      return res
+        .status(403)
+        .send({ error: "Wish should be minimum 3 charcters" });
     } else {
       try {
         const newWish = await Wish.query().insert({
@@ -119,7 +119,7 @@ router.post("/:id/addwish", async (req, res) => {
       }
     }
   } else {
-    return res.send({ res: "All fields must be filled" });
+    return res.status(403).send({ error: "All fields are required" });
   }
 });
 
@@ -140,7 +140,7 @@ router.post("/:id/addimage", async (req, res) => {
       return res.status(500).send({ error: error.message });
     }
   } else {
-    return res.send({ response: "Fields are not filled correctly" });
+    return res.status(403).send({ error: "Fields are not filled correctly" });
   }
 });
 
@@ -171,7 +171,7 @@ router.put("/edit/wish/:id", auth, async (req, res) => {
       return res.status(500).send({ error: error.message });
     }
   } else {
-    return res.send({ response: "Fields are not filled" });
+    return res.status(403).send({ error: "All fields are required" });
   }
 });
 
@@ -180,9 +180,9 @@ router.delete("/deletewish/:id", auth, async (req, res) => {
   const wishId = req.params.id;
   try {
     const deletedWish = await Wish.query().delete().where({ id: wishId });
-    res.json({ msg: "wish is deleted" });
+    return res.send({ msg: "wish is deleted" });
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message });
   }
 });
 

@@ -21,31 +21,29 @@ export default function Register() {
     e.preventDefault();
     try {
       const newUser = { email, password, passwordCheck, firstName, lastName };
-      const addNewUser = await axios
-        .post("http://localhost:9090/register", newUser)
-        .catch((error) => console.log(error));
-      console.log(addNewUser);
-      if (addNewUser.data.message) {
-        setError(addNewUser.data.message);
-      } else {
-        const loginRes = await axios
-          .post("http://localhost:9090/login", {
-            email,
-            password,
-          })
-          .catch((error) => console.log(error));
-        console.log(loginRes);
-        setUserData({
-          token: loginRes.data.token,
-          id: loginRes.data.user,
-        });
+      const addNewUser = await axios.post(
+        "http://localhost:9090/register",
+        newUser
+      );
 
-        localStorage.setItem("auth-token", loginRes.data.token);
-        localStorage.setItem("id", loginRes.data.user.id);
-        history.push("/home");
-      }
+      // console.log(addNewUser);
+
+      const loginRes = await axios.post("http://localhost:9090/login", {
+        email,
+        password,
+      });
+
+      setUserData({
+        token: loginRes.data.token,
+        id: loginRes.data.user,
+      });
+
+      localStorage.setItem("auth-token", loginRes.data.token);
+      localStorage.setItem("id", loginRes.data.user.id);
+      history.push("/home");
+      // }
     } catch (error) {
-      console.log(error.message);
+      setError(error.response.data.error);
     }
   };
   return (

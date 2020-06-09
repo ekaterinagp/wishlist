@@ -6,18 +6,13 @@ import uui from "uuidv4";
 import axios from "axios";
 
 const UploadFirebase = (props) => {
-  // console.log(props);
-  // console.log(props.wishID);
-  // const allInputs = {  };
+  const [error, setError] = useState();
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageAsUrl, setImageAsUrl] = useState(props.img);
 
-  // console.log(imageAsFile);
   const handleImageAsFile = (e) => {
     const image = e.target.files[0];
-    // console.log("name?", image.name);
     setImageAsFile((imageFile) => image);
-    // console.log(imageAsFile);
   };
 
   function refreshPage() {
@@ -25,16 +20,20 @@ const UploadFirebase = (props) => {
   }
 
   const addLink = async (img) => {
-    // console.log(img);
-    const regex = /.+?(?=&)/g;
-    const modified = img.imgUrl.match(regex)[0];
-    const res = await axios
-      .post(`http://localhost:9090/${props.wishID}/addimage`, {
-        imgUrl: modified,
-      })
-      .catch((error) => console.log(error));
-    // console.log(res);
-    refreshPage();
+    try {
+      const regex = /.+?(?=&)/g;
+      const modified = img.imgUrl.match(regex)[0];
+      const res = await axios.post(
+        `http://localhost:9090/${props.wishID}/addimage`,
+        {
+          imgUrl: modified,
+        }
+      );
+
+      refreshPage();
+    } catch (error) {
+      setError(error.response.data.error);
+    }
   };
 
   const handleFireBaseUpload = (e) => {

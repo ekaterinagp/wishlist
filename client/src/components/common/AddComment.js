@@ -12,24 +12,20 @@ const AddComment = (props) => {
 
   const addNewComment = async (e) => {
     e.preventDefault();
-
-    try {
-      setText("");
-      const userid = localStorage.getItem("id");
-      if (userid) {
-        const comment = { text };
-        const addedCommentRes = await axios
-          .post(`http://localhost:9090/${userid}/addcomment/${listId}`, comment)
-          .catch((error) => console.log(error.message));
-        console.log(addedCommentRes);
-
-        if (addedCommentRes.data.error) {
-          setError(addedCommentRes.data.error);
-        }
+    setText("");
+    const userid = localStorage.getItem("id");
+    if (userid) {
+      const comment = { text };
+      try {
+        const addedCommentRes = await axios.post(
+          `http://localhost:9090/${userid}/addcomment/${listId}`,
+          comment
+        );
         props.parentMethod();
+      } catch (error) {
+        console.log(error.response.data);
+        setError(error.response.data.error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 

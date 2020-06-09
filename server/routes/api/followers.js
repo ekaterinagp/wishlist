@@ -50,7 +50,7 @@ router.post("/follow", async (req, res) => {
         .andWhere({ user_id: user_id });
 
       if (existingFollower[0]) {
-        return res.send({ res: "User already followed" });
+        return res.status(403).send({ error: "User is already followed" });
       } else {
         const newFollower = await Follower.query().insert({
           user_id: user_id,

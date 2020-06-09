@@ -28,17 +28,16 @@ const AddWish = (props) => {
         desc,
       };
 
-      const addedDataRes = await axios
-        .post(`http://localhost:9090/${id}/addwish`, enteredData)
-        .catch((error) => console.log(error));
-      console.log({ addedDataRes });
-      if (addedDataRes.data.res) {
-        console.log(addedDataRes.data.res);
-        setError(addedDataRes.data.res);
-      }
+      const addedDataRes = await axios.post(
+        `http://localhost:9090/${id}/addwish`,
+        enteredData
+      );
+
+      // console.log({ addedDataRes });
+
       props.fetchAll();
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.error);
     }
   };
 

@@ -61,7 +61,6 @@ router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const user = await User.query().where("id", id).withGraphFetched("wishes");
-    console.log(user);
 
     let newUser = {
       firstName: user[0].first_name,
@@ -97,9 +96,9 @@ router.post("/register", (req, res) => {
     password === passwordCheck
   ) {
     if (password.length < 8) {
-      return res.send({
-        message: "Password must be 8 characters minimum",
-      });
+      return res
+        .status(403)
+        .send({ error: "Password must be 8 characters minimum" });
     } else {
       bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
         if (error) {
@@ -112,7 +111,7 @@ router.post("/register", (req, res) => {
             .limit(1);
 
           if (existingUser[0]) {
-            return res.send({ message: "User already exists" });
+            return res.status(403).send({ error: "User already exists" });
           } else {
             const newUser = await User.query().insert({
               first_name: firstName,
@@ -129,31 +128,33 @@ router.post("/register", (req, res) => {
       });
     }
   } else if (password !== passwordCheck) {
-    return res.send({
-      message: "Password and repeated password are not the same",
-    });
+    return res
+      .status(403)
+      .send({ error: "Password and repeated password are not the same" });
   } else {
-    return res.send({ message: "Missing fields" });
+    return res.status(403).send({ error: "All fields are required" });
   }
 });
 
 //@route POST login of a user
 router.post("/login", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const { email, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     const users = await User.query().select().where({ email: email }).limit(1);
     const user = users[0];
 
     if (!user) {
-      return res.send({ message: "User with this email does not exist" });
+      return res
+        .status(403)
+        .send({ error: "User with this email does not exist" });
     }
 
     if (email && password) {
       bcrypt.compare(password, user.password).then((isMatch) => {
-        if (!isMatch) return res.json({ message: "Wrong password" });
+        if (!isMatch) return res.status(403).send({ error: "Wrong password" });
         jwt.sign(
           { id: user.id },
           config.get("jwtSecret"),
@@ -195,59 +196,6 @@ router.post("/tokenIsValid", async (req, res) => {
     if (!user) return res.json(false);
 
     return res.json(true);
-  } catch (err) {
-    res.json({ error: err.message });
-  }
-});
-
-//@route reset password
-router.post("/change-password/:id", async (req, res) => {
-  try {
-    const { email, password, newPassword } = req.body;
-    const userId = req.params.id;
-    const users = await User.query().select().where({ email: email }).limit(1);
-    const user = users[0];
-    if (!user) {
-      return res.send({ message: "User with this email does not exist" });
-    }
-    if (email && password && newPassword) {
-      bcrypt.compare(password, user.password, function (err, hash) {
-        if (err) {
-          return res.json({ message: "Wrong password" });
-        }
-        if (res) {
-          console.log("old password matched");
-          if (newPassword < 8) {
-            return res.send({
-              message: "Password does not fulfill the requirements",
-            });
-          } else {
-            console.log("new password will be hashed");
-            bcrypt.hash(
-              newPassword,
-              saltRounds,
-              async (error, hashedPassword) => {
-                console.log(hashedPassword);
-                if (error) {
-                  return res.send({ message: "error hashing password" });
-                }
-                try {
-                  const updatedUser = await User.query()
-                    .update({ password: hashedPassword })
-                    .where("id", userId);
-                  console.log(updatedUser);
-                  return res.send({ updatedUser });
-                } catch (error) {
-                  return res.send({ message: error.message });
-                }
-              }
-            );
-          }
-        } else {
-          return res.send({ message: "old password didn't match" });
-        }
-      });
-    }
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -258,7 +206,7 @@ router.post("/:id/details/add", async (req, res) => {
   const userId = req.params.id;
 
   const { size, color, shop } = req.body;
-  console.log(req.body);
+
   if (size || color || shop) {
     try {
       const newDetails = await Details.query().insert({
@@ -273,7 +221,7 @@ router.post("/:id/details/add", async (req, res) => {
       return res.status(500).send({ message: error.message });
     }
   } else {
-    return res.send({ message: "All fields are empty" });
+    return res.status(403).send({ error: "All fields are empty" });
   }
 });
 
@@ -305,7 +253,7 @@ router.put("/edit/:id/settings", auth, async (req, res) => {
       return res.status(500).send({ message: error.message });
     }
   } else {
-    return res.send({ response: "Fields are missing" });
+    return res.status(403).send({ error: "Fields are missing" });
   }
 });
 
@@ -352,7 +300,7 @@ router.put("/edit/:id/preferences", auth, async (req, res) => {
       return res.status(500).send({ message: error.message });
     }
   } else {
-    return res.send({ response: "Fields are missing" });
+    return res.status(403).send({ error: "Fields are missing" });
   }
 });
 
@@ -366,5 +314,58 @@ router.delete("/delete/:id", auth, async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+
+// //@route reset password
+// router.post("/change-password/:id", async (req, res) => {
+//   try {
+//     const { email, password, newPassword } = req.body;
+//     const userId = req.params.id;
+//     const users = await User.query().select().where({ email: email }).limit(1);
+//     const user = users[0];
+//     if (!user) {
+//       return res.send({ message: "User with this email does not exist" });
+//     }
+//     if (email && password && newPassword) {
+//       bcrypt.compare(password, user.password, function (err, hash) {
+//         if (err) {
+//           return res.json({ message: "Wrong password" });
+//         }
+//         if (res) {
+//           console.log("old password matched");
+//           if (newPassword < 8) {
+//             return res.send({
+//               message: "Password does not fulfill the requirements",
+//             });
+//           } else {
+//             console.log("new password will be hashed");
+//             bcrypt.hash(
+//               newPassword,
+//               saltRounds,
+//               async (error, hashedPassword) => {
+//                 console.log(hashedPassword);
+//                 if (error) {
+//                   return res.send({ message: "error hashing password" });
+//                 }
+//                 try {
+//                   const updatedUser = await User.query()
+//                     .update({ password: hashedPassword })
+//                     .where("id", userId);
+//                   console.log(updatedUser);
+//                   return res.send({ updatedUser });
+//                 } catch (error) {
+//                   return res.send({ message: error.message });
+//                 }
+//               }
+//             );
+//           }
+//         } else {
+//           return res.send({ message: "old password didn't match" });
+//         }
+//       });
+//     }
+//   } catch (error) {
+//     res.json({ error: error.message });
+//   }
+// });
 
 module.exports = router;
