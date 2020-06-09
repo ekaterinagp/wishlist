@@ -9,8 +9,6 @@ export default function List({ match }) {
   let params = match.params;
   console.log(params);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [showText, setShowText] = useState(false);
   const [wishlist, setWishList] = useState();
   const [userData, setUserData] = useState({
     name: "",

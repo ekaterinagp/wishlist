@@ -32,7 +32,7 @@ export default function StartPage() {
       clearInterval(interval);
       abortController.abort();
     };
-  }, ["https://api.adviceslip.com/advice"]);
+  }, []);
 
   return (
     <div className="start-container">

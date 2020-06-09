@@ -384,7 +384,7 @@ export default function UserWishlist() {
                             <div className="bottom-div-add-comment">
                               <AddComment
                                 listId={id}
-                                fetchComments={fetchDetailsCommentsWishes}
+                                parentMethod={fetchDetailsCommentsWishes}
                               />
                             </div>
                           </div>

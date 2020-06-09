@@ -13,8 +13,8 @@ export default function Header() {
     id: "",
   });
   const history = useHistory();
+  const token = localStorage.getItem("auth-token");
 
-  useEffect(() => console.log(userData), [userData]);
   const checkUserLoggedIn = async () => {
     if (token) {
       const tokenRes = await axios.post(
@@ -27,18 +27,18 @@ export default function Header() {
         }
       );
       setLoggedIn(true);
-      // console.log(tokenRes);
+      console.log(tokenRes);
     } else {
       setLoggedIn(false);
     }
   };
-  const token = localStorage.getItem("auth-token");
+
   useEffect(() => {
     checkUserLoggedIn();
   }, []);
 
   const register = () => history.push("/register");
-  // const profile = () => history.push("/profile");
+
   const login = () => history.push("/login");
 
   const home = () => history.push("/home");

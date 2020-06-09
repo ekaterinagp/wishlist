@@ -6,7 +6,7 @@ import Error from "./Error";
 const AddComment = (props) => {
   const [text, setText] = useState();
   const [error, setError] = useState("");
-  // console.log(props.listId);
+  console.log(props);
   const loggedIn = localStorage.getItem("id");
   const listId = props.listId;
 
@@ -26,7 +26,7 @@ const AddComment = (props) => {
         if (addedCommentRes.data.error) {
           setError(addedCommentRes.data.error);
         }
-        props.fetchComments();
+        props.parentMethod();
       }
     } catch (error) {
       console.log(error);

@@ -9,7 +9,6 @@ const UpdateDetails = (props) => {
   const [color, setColor] = useState(props.userData.color);
   const [size, setSize] = useState(props.userData.size);
   const [shop, setShop] = useState(props.userData.shop);
-  const [isOpen, setIsOpen] = useState(true);
   const [error, setError] = useState("");
 
   const history = useHistory();
@@ -17,15 +16,15 @@ const UpdateDetails = (props) => {
   const handelChange = (event) => {
     console.log(event.target.value);
     console.log(event.target.id);
-    if (event.target.id == "color") {
+    if (event.target.id === "color") {
       setColor(event.target.value);
       console.log(color);
     }
-    if (event.target.id == "size") {
+    if (event.target.id === "size") {
       setSize(event.target.value);
       console.log(size);
     }
-    if (event.target.id == "shop") {
+    if (event.target.id === "shop") {
       setShop(event.target.value);
       console.log(shop);
     }
