@@ -14,7 +14,7 @@ router.get("/wishes", async (req, res) => {
   return res.send(wishes);
 });
 
-//@route GET  wishe by id + user's name + comment with name
+//@route GET  wishe by id + user's name + comment with name and if user has no data, only name and email
 router.get("/list/:id", async (req, res) => {
   const user_id = req.params.id;
   let user = {
@@ -23,6 +23,7 @@ router.get("/list/:id", async (req, res) => {
     email: null,
     wishes: [],
   };
+
   let oneWish = {
     id: null,
     wish: null,
@@ -44,7 +45,7 @@ router.get("/list/:id", async (req, res) => {
       .where({ user_id: user_id })
       .withGraphFetched("users")
       .withGraphFetched("comments.[users]");
-    console.log(list);
+
     if (list.length) {
       list.forEach((list) => {
         user = {
@@ -76,7 +77,6 @@ router.get("/list/:id", async (req, res) => {
           oneWish.comments.push(oneComment);
         });
       });
-      // return res.send(user);
     } else {
       const userAlone = await User.query().where({ id: user_id });
       userAlone.forEach((one) => {
@@ -99,22 +99,20 @@ router.post("/:id/wish/add", async (req, res) => {
   const id = req.params.id;
 
   const { wish, desc } = req.body;
-  console.log(req.body);
+
   if (wish && desc) {
-    console.log("all fields there");
-    if (wish.length < 4) {
+    if (wish.length < 3) {
       return res.send({
-        response: "Wish should be min 4 char",
+        response: "Wish should be min 3 char",
       });
     } else {
       try {
-        console.log("we are in a try");
         const newWish = await Wish.query().insert({
           wish: wish,
           desc: desc,
           user_id: id,
         });
-        console.log(newWish);
+
         return res.send({ wish: newWish.wish });
       } catch (error) {
         return res.send({ response: error.message });
@@ -128,19 +126,15 @@ router.post("/:id/wish/add", async (req, res) => {
 //@route for save image path to db
 router.post("/:id/image/add", async (req, res) => {
   const wishID = req.params.id;
-  console.log(req.body);
+
   const { imgUrl } = req.body;
-  console.log(imgUrl);
+
   if (imgUrl) {
-    console.log("all fields there");
-    console.log(imgUrl);
     try {
-      console.log("we are in a try");
       const updatedLink = await Wish.query()
         .update({ imgURL: imgUrl })
         .where("id", wishID);
 
-      console.log(updatedLink);
       return res.send({ updatedLink });
     } catch (error) {
       return res.send({ response: error.message });
@@ -150,8 +144,8 @@ router.post("/:id/image/add", async (req, res) => {
   }
 });
 
-//@route update wish ADD auth
-router.put("/edit/wish/:id", async (req, res) => {
+//@route update wish
+router.put("/edit/wish/:id", auth, async (req, res) => {
   const wishId = req.params.id;
   const { wish, desc } = req.body;
 

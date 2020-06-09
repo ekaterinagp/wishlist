@@ -45,7 +45,7 @@ export default function Header() {
   const startpage = () => history.push("/");
 
   const goOut = () => {
-    history.push("/");
+    history.push("/startpage");
   };
 
   const logOut = () => {

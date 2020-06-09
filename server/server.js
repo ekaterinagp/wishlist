@@ -32,21 +32,20 @@ const rateLimit = require("express-rate-limit");
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 4 requests per windowMs
+  max: 1000, // limit each IP to 4 requests per windowMs
 });
 
 const usersRouter = require("./routes/api/users");
 const followersRouter = require("./routes/api/followers");
 
 const wishesRouter = require("./routes/api/wishes");
-// const sendMailRouter = require("./routes/api/sendMail");
+
 const commentsRouter = require("./routes/api/comments");
-// app.use(usersRouter, authLimiter);
-app.use(usersRouter);
+app.use(usersRouter, authLimiter);
+// app.use(usersRouter);
 app.use(wishesRouter);
 app.use(commentsRouter);
 app.use(followersRouter);
-// app.use(sendMailRouter);
 
 const server = app.listen(port, (error) => {
   if (error) {

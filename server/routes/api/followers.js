@@ -6,13 +6,13 @@ const Follower = require("../../models/Follower");
 //@route GET all user's  and all who  follows the user
 router.get("/followers", async (req, res) => {
   const following = await User.query().withGraphFetched("followers");
-  // .withGraphFetched("users.[followers]");
   return res.send(following);
 });
 
 //@route GET a user and who user follows
 router.get("/followers/:id", async (req, res) => {
   const userID = req.params.id;
+
   const followers = {
     follows: [],
     followers: [],
@@ -21,15 +21,19 @@ router.get("/followers/:id", async (req, res) => {
   const following = await Follower.query()
     .where("user_id", userID)
     .withGraphFetched("users");
+
   following.forEach((one) => {
     followers.follows.push(one.follows_id);
   });
-  const following1 = await Follower.query()
+
+  const follows = await Follower.query()
     .where("follows_id", userID)
     .withGraphFetched("users");
-  following1.forEach((one) => {
+
+  follows.forEach((one) => {
     followers.followers.push(one.user_id);
   });
+
   return res.send(followers);
 });
 
@@ -37,12 +41,14 @@ router.get("/followers/:id", async (req, res) => {
 router.post("/follow", async (req, res) => {
   const { follower_id, user_id } = req.body;
   console.log(req.body);
+
   if (follower_id && user_id) {
     try {
       const existingFollower = await Follower.query()
         .select()
         .where({ follows_id: follower_id })
         .andWhere({ user_id: user_id });
+
       if (existingFollower[0]) {
         return res.send({ res: "User already followed" });
       } else {
@@ -50,7 +56,6 @@ router.post("/follow", async (req, res) => {
           user_id: user_id,
           follows_id: follower_id,
         });
-
         return res.send(newFollower);
       }
     } catch (error) {
@@ -63,6 +68,7 @@ router.post("/follow", async (req, res) => {
 router.delete("/unfollow", async (req, res) => {
   const { follower_id, user_id } = req.body;
   console.log(req.body);
+
   if (follower_id && user_id) {
     try {
       const unfollow = await Follower.query()

@@ -95,10 +95,12 @@ const UploadFirebase = (props) => {
         <button className="example_b uploads">Upload</button>
       </form>
       {!imageAsUrl ? (
-        <img
-          className="wish-img"
-          src="https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media"
-        ></img>
+        <div
+          className="wish-div"
+          style={{
+            backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/wishlist-8b07c.appspot.com/o/images%2Fdefault.jpg?alt=media)`,
+          }}
+        ></div>
       ) : (
         // <img className="wish-img" src={imageAsUrl} alt="image tag" />
         <div

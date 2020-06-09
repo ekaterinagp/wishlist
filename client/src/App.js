@@ -41,15 +41,13 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <Header /> */}
-        {/* {loggedIn ? <Home /> : <StartPage />} */}
         <Switch>
           {loggedIn ? (
             <Route exact path="/" component={Home} />
           ) : (
             <Route exact path="/" component={StartPage} />
           )}
-
+          <Route exact path="/startpage" component={StartPage} />
           <Route path="/home" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />

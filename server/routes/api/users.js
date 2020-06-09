@@ -6,8 +6,6 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const jwSecret = config.get("jwtSecret");
 const User = require("../../models/User");
-const Comment = require("../../models/Comment");
-const Wish = require("../../models/Wish");
 const Details = require("../../models/Details");
 
 //@route GET all users
@@ -77,13 +75,6 @@ router.get("/user/:id", async (req, res) => {
 
   return res.send(newUser);
 });
-
-//@route GET all comments for one user
-// router.get("/wishlist/:id", async (req, res) => {
-//   const id = req.params.id;
-//   const user = await Comment.query().where("to_user_id", id);
-//   return res.send(user);
-// });
 
 //@route POST register user
 router.post("/register", (req, res) => {
@@ -281,8 +272,8 @@ router.post("/:id/details/add", async (req, res) => {
   }
 });
 
-//@route update personal details ADD AUTH
-router.put("/edit/:id/settings", async (req, res) => {
+//@route update personal details
+router.put("/edit/:id/settings", auth, async (req, res) => {
   const userId = req.params.id;
   const { firstName, lastName, email } = req.body;
   if (firstName && lastName && email) {
@@ -313,8 +304,8 @@ router.put("/edit/:id/settings", async (req, res) => {
   }
 });
 
-//@route update preferences ADD AUTH
-router.put("/edit/:id/preferences", async (req, res) => {
+//@route update preferences
+router.put("/edit/:id/preferences", auth, async (req, res) => {
   const userId = req.params.id;
   const { size, color, shop } = req.body;
   if (size || color || shop) {
