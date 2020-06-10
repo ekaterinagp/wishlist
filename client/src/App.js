@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-// import Upload from "./components/Upload";
-import Header from "./components/Header";
 import StartPage from "./components/StartPage";
 import axios from "axios";
 
